@@ -1,24 +1,22 @@
 
 
 .navbar {
-    align-items: center;
-    display: flex;
-    box-sizing: border-box;
-    flex-direction: row;
-    flex-grow: 1;
+    width: 100%
 }
 
 .searchbar {
     max-width: 690px
-    
+
 }
 
 .right-navbar {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-end;
+
 }
 
 li {
     min-width: max-content;
+}
+
+.navbar-toggler {
+
 }

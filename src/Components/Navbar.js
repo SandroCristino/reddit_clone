@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import '../Styles/Navbar.css'
+import '../Styles/Navbar.css';
 
 export default function Navbar(props) {
   const [isOpen, setIsOpen] = useState(false);
@@ -12,44 +12,61 @@ export default function Navbar(props) {
   return (
     <nav className="navbar navbar-expand-lg bg-light">
       <div className="navbar">
+        
+        <Link className="navbar-brand mx-3" to="/reddit_clone">
+          Wezzy
+        </Link>
 
-          <Link className='navbar-brand mx-3' to='/reddit_clone'>Wezzy</Link>
-
-        <div class="searchbar input-group">
-            <button class="btn btn-outline-secondary" type="button" id="button-addon1">Search</button>
-            <input type="text" class="form-control" placeholder="" aria-label='' aria-describedby="button-addon1" />
+        <div className="searchbar input-group mx-auto">
+          <button
+            className="btn btn-outline-secondary"
+            type="button"
+            id="button-addon1"
+          >
+            Search
+          </button>
+          <input
+            type="text"
+            className="form-control"
+            placeholder=""
+            aria-label=""
+            aria-describedby="button-addon1"
+          />
+          <button className="btn btn-danger border mr-2">Log In</button>
         </div>
 
-        <div className='right-navbar d-flex'>
-            <button className='btn btn-danger border'>Log In</button>
+        <button
+          className="navbar-toggler mx-2"
+          type="button"
+          onClick={toggleNavbar}
+        >
+          <span className="navbar-toggler-icon"></span>
+        </button>
+      </div>
 
-            <button
-            className="navbar-toggler"
-            type="button"
-            onClick={toggleNavbar}
-            >
-            <span className="navbar-toggler-icon">=</span>
-            </button>
-            <div
-            className={`collapse navbar-collapse ${
-                isOpen ? 'show mx-2' : ''
-            } justify-content-end `}
-            id="navbarNav"
-            >
-            <ul className="navbar-nav ms-auto">
-                <li className="nav-item mx-2" to="/shopping_list">
-                <Link className="nav-link btn border" to="/my_profile">
-                    Profile
-                </Link>
-                </li>
-                <li className="nav-item mr-2">
-                <Link className="nav-link nav-item btn border" to="/sign_in">
-                    Sign in/ Register
-                </Link>
-                </li>
-            </ul>
-
-            </div>
+      <div
+        className={`right-navbar d-flex ${
+          isOpen ? 'w-100 justify-content-end' : ''
+        }`}
+      >
+        <div
+          className={`collapse navbar-collapse ${
+            isOpen ? 'show w-100' : ''
+          } justify-content-end`}
+          id="navbarNav"
+        >
+          <ul className="navbar-nav w-100">
+            <li className="nav-item mx-2">
+              <Link className="nav-link btn border" to="/my_profile">
+                Profile
+              </Link>
+            </li>
+            <li className="nav-item mx-2">
+              <Link className="nav-link nav-item btn border" to="/sign_in">
+                Sign in/ Register
+              </Link>
+            </li>
+          </ul>
         </div>
       </div>
     </nav>
