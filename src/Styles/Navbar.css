@@ -1,5 +1,3 @@
-
-
 .navbar {
     width: 100%
 }
@@ -9,14 +7,6 @@
 
 }
 
-.right-navbar {
-
-}
-
 li {
     min-width: max-content;
-}
-
-.navbar-toggler {
-
 }

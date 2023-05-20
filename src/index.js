@@ -2,6 +2,7 @@ import React from 'react'
 import ReactDOM from 'react-dom/client'
 import RouteSwitch from './Components/RouterSwitch.js'
 import 'bootstrap/dist/css/bootstrap.css'
+import './Styles/Index.css'
 // import { Provider } from 'react-redux'
 // import store from './Components/Store.js'
 

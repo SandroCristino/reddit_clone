@@ -19,37 +19,19 @@ export default function Navbar(props) {
         </Link>
 
         <div className="searchbar input-group mx-auto">
-          <button
-            className="btn btn-outline-secondary"
-            type="button"
-            id="button-addon1"
-          >
+          <button className="btn btn-outline-secondary" type="button" id="button-addon1">
             Search
           </button>
-          <input
-            type="text"
-            className="form-control"
-            placeholder=""
-            aria-label=""
-            aria-describedby="button-addon1"
-          />
+          <input type="text" className="form-control" />
           <button className="btn btn-danger border mr-2">Log In</button>
         </div>
 
-        <button
-          className="navbar-toggler mx-2"
-          type="button"
-          onClick={toggleNavbar}
-        >
+        <button className="navbar-toggler mx-2" type="button" onClick={toggleNavbar}>
           <span className="navbar-toggler-icon"></span>
         </button>
       </div>
 
-      <div
-        className={`right-navbar d-flex ${
-          isOpen ? 'w-100 justify-content-end' : ''
-        }`}
-      >
+      <div className={`right-navbar d-flex ${ isOpen ? 'w-100 justify-content-end' : '' }`}>
         <div
           className={`collapse navbar-collapse ${
             isOpen ? 'show w-100' : ''
