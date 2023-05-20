@@ -12,8 +12,9 @@ export default function Navbar(props) {
   return (
     <nav className="navbar navbar-expand-lg bg-light">
       <div className="navbar">
-        
-        <Link className="navbar-brand mx-3" to="/reddit_clone">
+
+        <Link className="navbar-brand mx-3" to="/">
+          <i class="bi bi-reddit mx-2"></i>  
           Wezzy
         </Link>
 
