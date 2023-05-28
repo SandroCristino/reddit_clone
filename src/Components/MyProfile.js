@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
+import { useAuthState, useSendSignInLinkToEmail } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
 import { auth, db, logout } from "../Components/Firebase.js";
-import { query, collection, getDocs, where } from "firebase/firestore";
+import { query, collection, getDocs, where, memoryLruGarbageCollector } from "firebase/firestore";
 import { useDispatch } from 'react-redux';
 import { setUser, clearUser } from './userReducer';
-import { useSelector } from 'react-redux';
+import Navbar from "./Navbar.js";
 
 
 
@@ -31,28 +31,19 @@ export default function MyProfile() {
   useEffect(() => {
     if (loading) return;
     if (user) {
-     
       fetchUserName();
-      dispatch(setUser(user)); // Dispatch setUser action with the user data
-      console.log('Done')
-    } 
-    // else {
-    //   dispatch(clearUser()); // Dispatch clearUser action if user is not logged in
-    //   navigate("/");
-    //   console.log('Cleared')
-    // }
-
-  }, [user, loading, navigate, dispatch]);
+      const userData = { ...user, name }; // Combine user data with the name property
+      dispatch(setUser(userData)); // Dispatch setUser action with the combined user data
+    }
+  }, [user, loading, navigate, dispatch, name]);
 
   return (
     <div>
+      < Navbar />
       <div className="dashboard__container">
         Logged in as
          <div>{name}</div>
          <div>{user?.email}</div>
-         <button className="dashboard__btn" onClick={logout}>
-          Logout
-         </button>
        </div>
     </div>
   );

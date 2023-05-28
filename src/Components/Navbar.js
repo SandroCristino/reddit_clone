@@ -1,13 +1,29 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
 import '../Styles/Navbar.css';
+import { useSelector } from 'react-redux';
+import { clearUser } from './userReducer';
+import { logout } from "../Components/Firebase.js";
+
+
+
 
 export default function Navbar(props) {
   const [isOpen, setIsOpen] = useState(false);
+  const user = useSelector(state => state.user); // Retrieve the user state from Redux
+
 
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
   };
+
+  const handleLogout = () => {
+    logout()
+    clearUser()
+    localStorage.clear()
+    window.location.reload() // Reload the window
+
+  }
 
   return (
     <nav className="navbar navbar-expand-lg bg-light">
@@ -23,7 +39,6 @@ export default function Navbar(props) {
             Search
           </button>
           <input type="text" className="form-control" />
-          <button className="btn btn-danger border mr-2">Log In</button>
         </div>
 
         <button className="navbar-toggler mx-2" type="button" onClick={toggleNavbar}>
@@ -39,16 +54,29 @@ export default function Navbar(props) {
           id="navbarNav"
         >
           <ul className="navbar-nav w-100">
-            <li className="nav-item mx-2">
-              <Link className="nav-link btn border" to="/my_profile">
-                Profile
-              </Link>
-            </li>
-            <li className="nav-item mx-2">
-              <Link className="nav-link nav-item btn border" to="/sign_in">
-                Sign in/ Register
-              </Link>
-            </li>
+            {user.isLoggedIn ? (
+            <>
+              <li className="nav-item mx-2">
+                <Link className="nav-link btn border" to="/my_profile">
+                  Hey, {user.name}
+                </Link>
+              </li>
+          
+              <li className="nav-item mx-2">
+                <Link className="nav-link btn btn-danger border" to="/" onClick={handleLogout}>
+                  Logout
+                </Link>
+              </li>
+            </>
+            ) : (
+              <li className="nav-item mx-2">
+                <Link className="nav-link nav-item btn btn-danger border" to="/sign_in">
+                  Sign in/ Register
+                </Link>
+              </li>
+            )}
+       
+         
           </ul>
         </div>
       </div>
