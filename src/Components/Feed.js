@@ -10,8 +10,6 @@ export default function Feed({ picture, description, category }) {
     const [likes, setLikes] = useState(0)
     const [commentList, setCommentList] = useState([])
     const [newComment, setNewComment] = useState([])
-    const [selectedCategory, setSelectedCategory] = useState(category);
-    const categoryOptions = ['Crypto', 'Gaming', 'Televison', 'Any'];
     const [recentComments, setRecentComments] = useState([])
     const [showAllComments, setShowAllComments] = useState(false)
 
@@ -46,19 +44,19 @@ export default function Feed({ picture, description, category }) {
 
     return (
         <div>
-            // Picture and Description
+            {/* Picture and Description */}
             <div>
                 <input type="text" placeholder="Picture URL" value={picture} readOnly />
                 <textarea className='mt-1' placeholder="Description" value={description} readOnly></textarea>
             </div>
 
-            // Like and Dislike
+            {/* Like and Dislike */}
             <div className='d-flex mt-2'>
                 <button className='mx-2' onClick={increaseLikes}>👍</button>
                 <button onClick={decreaseLikes}>👎</button>
             </div>
 
-            // Recent comments 
+            {/* Recent comments  */}
             <div>
                 <ul onClick={toggleShowAllComments}>
                 { showAllComments 
@@ -68,7 +66,7 @@ export default function Feed({ picture, description, category }) {
                 </ul>
             </div>
 
-            // Write own comment
+            {/* Write own comment */}
             <div className="searchbar input-group mx-auto">
                 <input 
                 type="text" 
