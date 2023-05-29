@@ -12,3 +12,11 @@ export default function Homepage() {
     </div>
   );
 }
+
+{/* <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
+{categoryOptions.map((option) => (
+    <option key={option} value={option}>
+    {option}
+    </option>
+))}
+</select> */}

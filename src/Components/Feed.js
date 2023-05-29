@@ -12,6 +12,12 @@ export default function Feed({ picture, description, category }) {
     const [newComment, setNewComment] = useState([])
     const [selectedCategory, setSelectedCategory] = useState(category);
     const categoryOptions = ['Crypto', 'Gaming', 'Televison', 'Any'];
+    const [recentComments, setRecentComments] = useState([])
+    const [showAllComments, setShowAllComments] = useState(false)
+
+    useEffect(() => {
+        setRecentComments(commentList.slice(-3))
+    },[commentList])
 
     function increaseLikes() {
         setLikes(likes + 1)
@@ -26,24 +32,43 @@ export default function Feed({ picture, description, category }) {
           const comment = {
             id: uuidv4(),
             text: newComment,
-            // userId: userId,
+            userEmail: currentUser.userData.email
           };
     
           setCommentList([...commentList, comment]);
           setNewComment('');
         }
-      }
+    }
+
+    function toggleShowAllComments() {
+        setShowAllComments(!showAllComments)
+    }
 
     return (
         <div>
+            // Picture and Description
             <div>
                 <input type="text" placeholder="Picture URL" value={picture} readOnly />
                 <textarea className='mt-1' placeholder="Description" value={description} readOnly></textarea>
             </div>
+
+            // Like and Dislike
             <div className='d-flex mt-2'>
                 <button className='mx-2' onClick={increaseLikes}>👍</button>
                 <button onClick={decreaseLikes}>👎</button>
             </div>
+
+            // Recent comments 
+            <div>
+                <ul onClick={toggleShowAllComments}>
+                { showAllComments 
+                    ? commentList.map((comment) => (<li key={comment.id}>{comment.text}</li>))
+                    : recentComments.map((comment) => ( <li key={comment.id}>{comment.text}</li>))
+                }
+                </ul>
+            </div>
+
+            // Write own comment
             <div className="searchbar input-group mx-auto">
                 <input 
                 type="text" 
@@ -51,21 +76,11 @@ export default function Feed({ picture, description, category }) {
                 placeholder='Message'
                 value={newComment}
                 onChange={(e) => setNewComment(e.target.value)}/>
-                // OnClick - get User data with e????
-                <select value={selectedCategory} onChange={(e) => setSelectedCategory(e.target.value)}>
-                    {categoryOptions.map((option) => (
-                        <option key={option} value={option}>
-                        {option}
-                        </option>
-                    ))}
-                </select>
                 <button className="btn btn-outline-secondary" type="button" id="button-addon1" onClick={addComment}>
                     Post
                 </button>
             </div>
-            <div>
-
-            </div>
+          
         </div>
     )
 }
