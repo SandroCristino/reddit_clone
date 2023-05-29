@@ -6,6 +6,8 @@ import { query, collection, getDocs, where, memoryLruGarbageCollector } from "fi
 import { useDispatch } from 'react-redux';
 import { setUser, clearUser } from './userReducer';
 import Navbar from "./Navbar.js";
+import CreateFeed from "./CreateFeed.js";
+import AddFeedButton from "./AddFeedButton.js";
 
 
 
@@ -15,6 +17,7 @@ export default function MyProfile() {
   const [name, setName] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [showCreateFeed, setShowCreateFeed] = useState(false); 
 
   const fetchUserName = async () => {
     try {
@@ -37,14 +40,24 @@ export default function MyProfile() {
     }
   }, [user, loading, navigate, dispatch, name]);
 
+  const handleToggleCreateFeed = () => {
+    setShowCreateFeed(!showCreateFeed);
+  };
+
   return (
     <div>
-      < Navbar />
-      <div className="dashboard__container">
-        Logged in as
-         <div>{name}</div>
-         <div>{user?.email}</div>
-       </div>
+    <Navbar />
+    <div className="d-flex justify-content-end m-4">
+      {showCreateFeed && <CreateFeed />}
+      <div onClick={handleToggleCreateFeed} >
+      <AddFeedButton />
+      </div>
     </div>
+    <div className="dashboard__container">
+      Logged in as
+      <div>{name}</div>
+      <div>{user?.email}</div>
+    </div>
+  </div>
   );
 }

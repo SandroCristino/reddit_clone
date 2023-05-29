@@ -3,6 +3,8 @@ import "firebase/firestore"
 import 'firebase/database'
 import { initializeApp } from "firebase/app"
 import { getStorage } from "firebase/storage";
+import { getFirestore } from 'firebase/firestore';
+
 import {
     GoogleAuthProvider,
     getAuth,
@@ -14,7 +16,6 @@ import {
 } from 'firebase/auth'
 
 import {
-    getFirestore,
     query,
     getDocs,
     collection,

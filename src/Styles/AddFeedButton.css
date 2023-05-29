@@ -1,0 +1,24 @@
+.addButtonContainer {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+}
+  
+.addButton {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #FF4F4F;
+    color: white;
+    font-size: 30px;
+    cursor: pointer;
+    transition: transform 0.2s ease-in-out;
+}
+  
+.addButton:hover {
+    transform: scale(0.9);
+}
+  
