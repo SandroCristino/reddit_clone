@@ -1,0 +1,25 @@
+.feed-container {
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.picture {
+    width: 100%;
+}
+
+.dateGroup {
+    font-size: 12px;
+}
+
+.feed-comment {
+    width: 100%;
+    word-wrap: break-word;
+
+}
+
+textarea {
+    border-style: none; 
+    border-color: Transparent; 
+    overflow: auto; 
+    resize: none !important;
+}

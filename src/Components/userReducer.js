@@ -4,6 +4,7 @@ const initialState = {
   isLoggedIn: false,
   name: null,
   userData: null,
+  showCreateFeed: false,
 };
 
 const userSlice = createSlice({
@@ -20,8 +21,11 @@ const userSlice = createSlice({
       state.userData = null
       state.name = null
     },
+    setShowCreateFeed: (state, action) => {
+      state.showCreateFeed = action.payload
+    }
   },
 });
 
-export const { setUser, clearUser } = userSlice.actions;
+export const { setUser, clearUser, setShowCreateFeed } = userSlice.actions;
 export default userSlice.reducer;

@@ -1,23 +1,33 @@
 import React, {useState} from 'react'
 import { db, storage } from './Firebase';
-import { addDoc, collection } from 'firebase/firestore';
+import { serverTimestamp, doc, setDoc } from 'firebase/firestore';
 import { ref, uploadBytes } from "firebase/storage";
+import { useSelector, useDispatch } from 'react-redux';
+import { setShowCreateFeed } from './userReducer';
 
-import { v4 as uuidv4 } from 'uuid'; // Import the UUID library
+import { v4 as uuidv4 } from 'uuid';
 import '../Styles/CreateFeed.css'
 
 export default function CreateFeed() {
     const [picture, setPicture] = useState('')
     const [description, setDescription] = useState('')
-    const [category, setCategory] = useState('')
+    const [category, setCategory] = useState('Any')
     const [loading, setLoading] = useState(false)
-    const categoryOptions = ['Any', 'Gaming', 'Televison', 'Crypto'];
+    const [likes] = useState(0)
+    const [commentList] = useState([])
+    const categoryOptions = ['Any', 'Gaming', 'Television', 'Crypto'];
+    const showCreateFeed = useSelector((state) => state.user.showCreateFeed)
+    const dispatch = useDispatch();
 
 
     function handlePictureUpload(e) {
         const file = e.target.files[0];
         setPicture(file);
     }
+
+    const handleToggleCreateFeed = () => {
+        dispatch(setShowCreateFeed(!showCreateFeed));
+    };
 
     async function handleUploadData() {
 
@@ -30,21 +40,20 @@ export default function CreateFeed() {
             const feedId = uuidv4();
 
             // Upload picture to Firebase
-            // const fileRef = storage.ref().child(picture.name);
-            // await fileRef.put(picture);
-
-            // Second attent
             const imagesRef = ref(storage, `images/${feedId}`)
-            uploadBytes(imagesRef, picture).then((snapshot) => {
+            await uploadBytes(imagesRef, picture).then((snapshot) => {
                 console.log('Uploaded a blob or file!');
             });
 
             // Upload the description, category, and the picture URL to the database
-            await addDoc(collection(db, "feeds"), {
+            await setDoc(doc(db, `feeds/${feedId}`), {
                 id: feedId,
                 description,
                 category,
-            });
+                data: serverTimestamp(),
+                likes,
+                commentList,
+            })
 
             // Reset
             setPicture('')
@@ -54,7 +63,7 @@ export default function CreateFeed() {
             console.error(error);
         } finally {
             setLoading(false)
-            window.location.reload()
+            handleToggleCreateFeed()
         }
     }
     return (
@@ -84,7 +93,7 @@ export default function CreateFeed() {
                 </select>
             </div>
             <div>
-                <button className="btn btn-primary w-100" onClick={handleUploadData}>
+                <button className="btn btn-primary w-100" onClick={handleUploadData} disabled={loading}>
                     {loading ? 'Uploading ...' : 'Submit'}
                 </button>
             </div>

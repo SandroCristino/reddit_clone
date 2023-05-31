@@ -13,8 +13,8 @@ const store = configureStore({
 store.subscribe(() => {
   const { user } = store.getState();
   console.log(user)
-  const { isLoggedIn, userData } = user;
-  localStorage.setItem('user', JSON.stringify({ isLoggedIn, userData }));
+  const { isLoggedIn, userData, showCreateFeed } = user;
+  localStorage.setItem('user', JSON.stringify({ isLoggedIn, userData, showCreateFeed }));
 });
 
 // Rehydrate the user state from local storage

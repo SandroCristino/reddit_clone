@@ -4,6 +4,7 @@ import 'firebase/database'
 import { initializeApp } from "firebase/app"
 import { getStorage } from "firebase/storage";
 import { getFirestore } from 'firebase/firestore';
+import { v4 as uuidv4 } from 'uuid';
 
 import {
     GoogleAuthProvider,
@@ -78,7 +79,8 @@ const registerWithEmailAndPassword = async (name, email, password) => {
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password);
     const user = res.user;
-    await addDoc(collection(db, "users"), {
+
+    await setDoc(doc(db, "users"), {
       uid: user.uid,
       name,
       authProvider: "local",
@@ -88,6 +90,21 @@ const registerWithEmailAndPassword = async (name, email, password) => {
     console.error(err);
   }
 };
+// // Email registration 
+// const registerWithEmailAndPassword = async (name, email, password) => {
+//   try {
+//     const res = await createUserWithEmailAndPassword(auth, email, password);
+//     const user = res.user;
+//     await addDoc(collection(db, "users"), {
+//       uid: user.uid,
+//       name,
+//       authProvider: "local",
+//       email,
+//     });
+//   } catch (err) {
+//     console.error(err);
+//   }
+// };
 
 
 // Email password reset
