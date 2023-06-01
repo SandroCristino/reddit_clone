@@ -38,7 +38,6 @@ export default function Feed({ picture, description, category, feedId, feedComme
           if (docSnapshot.exists()) {
             const feedData = docSnapshot.data();
             const likesArray = feedData.likes;
-            console.log(likesArray);
             setLikes(likesArray)
           } else {
             console.log('Feed document does not exist.');
@@ -81,17 +80,6 @@ export default function Feed({ picture, description, category, feedId, feedComme
         // Upload to user data
         updateServerData('users', currentUser.uid, 'likeList', feedId)
     }
-
-    // async function handleUploadComments() {
-    //     try {
-    //         await updateDoc(doc(db, `feeds/${feedId}`), {
-    //             commentList: commentList,
-    //         });
-    //     } catch (error) {
-    //         console.log(error);
-    //     }
-    // }
-
 
     function toggleShowAllComments() {
         setShowAllComments(!showAllComments)

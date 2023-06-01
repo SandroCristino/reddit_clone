@@ -73,12 +73,13 @@ export default function MyProfile() {
     )}
 
     {/* Create Feed    */}
-    <div className="d-flex justify-content-end m-4">
-      {showCreateFeed && <CreateFeed />}
+    <div className="d-flex justify-content-end feedButton">
       <div onClick={handleToggleCreateFeed} >
       <AddFeedButton />
       </div>
     </div>
+
+    {showCreateFeed && <CreateFeed />}
     
 
     {/* Display feed */}

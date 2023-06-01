@@ -1,9 +1,9 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import { db, storage, updateServerData } from './Firebase';
 import { serverTimestamp, doc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { ref, uploadBytes } from "firebase/storage";
 import { useSelector, useDispatch } from 'react-redux';
-import { setShowCreateFeed } from './userReducer';
+import { setShowCreateFeed, setShowCreateFeedFalse } from './userReducer';
 
 import { v4 as uuidv4 } from 'uuid';
 import '../Styles/CreateFeed.css'
@@ -20,7 +20,6 @@ export default function CreateFeed() {
     const categoryOptions = ['Any', 'Gaming', 'Television', 'Crypto'];
     const showCreateFeed = useSelector((state) => state.user.showCreateFeed)
     const dispatch = useDispatch();
-
 
     function handlePictureUpload(e) {
         const file = e.target.files[0];
@@ -82,36 +81,38 @@ export default function CreateFeed() {
         }
     }
     return (
-        <div className="mt-4 createFeedContainer">
-            <div classname='createFeedInnerContainer'>
-            <h2>Create Feed</h2>
-            <div className="mb-3">
-                <input type="file" className="form-control" onChange={handlePictureUpload} />
-                {picture && <img src={URL.createObjectURL(picture)} alt="Uploaded Picture" className="mt-3 previewPicture" />}
-            </div>
-            <div className="mb-3">
-                <textarea
-                    className="form-control createFeedText non-resizable-textarea"
-                    rows={3}
-                    placeholder="Description"
-                    value={description}
-                    onChange={(e) => setDescription(e.target.value)}
-                />
+        <div className='d-flex justify-content-center'>
+            <div className="mt-4 createFeedContainer">
+                <div classname='createFeedInnerContainer'>
+                <h2>Create Feed</h2>
+                <div className="mb-3">
+                    <input type="file" className="form-control" onChange={handlePictureUpload} />
+                    {picture && <img src={URL.createObjectURL(picture)} alt="Uploaded Picture" className="mt-3 previewPicture" />}
                 </div>
-            <div className="mb-3">
-                <select className="form-select" value={category} onChange={(e) => setCategory(e.target.value)}>
-                {categoryOptions.map((option) => (
-                    <option key={option} value={option}>
-                    {option}
-                    </option>
-                ))}
-                </select>
-            </div>
-            <div>
-                <button className="btn btn-primary w-100" onClick={handleUploadData} disabled={loading}>
-                    {loading ? 'Uploading ...' : 'Submit'}
-                </button>
-            </div>
+                <div className="mb-3">
+                    <textarea
+                        className="form-control createFeedText non-resizable-textarea"
+                        rows={3}
+                        placeholder="Description"
+                        value={description}
+                        onChange={(e) => setDescription(e.target.value)}
+                    />
+                    </div>
+                <div className="mb-3">
+                    <select className="form-select" value={category} onChange={(e) => setCategory(e.target.value)}>
+                    {categoryOptions.map((option) => (
+                        <option key={option} value={option}>
+                        {option}
+                        </option>
+                    ))}
+                    </select>
+                </div>
+                <div>
+                    <button className="btn btn-primary w-100" onClick={handleUploadData} disabled={loading}>
+                        {loading ? 'Uploading ...' : 'Submit'}
+                    </button>
+                </div>
+                </div>
             </div>
         </div>
     );

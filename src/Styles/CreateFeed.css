@@ -5,8 +5,15 @@
 .createFeedContainer {
     display: flex;
     flex-direction: column;
+    justify-content: center !important;
     align-items: center;
-    width: 100%;
+    width: 770px;
+
+    background-color: #f7f7f7;
+    padding-bottom: 20px;
+    padding-top: 20px;
+    border-radius: 10px;
+
 }
 
 .createFeedInnerContainer {
@@ -16,5 +23,6 @@
     background-color: white; /* Change the background color to white */
     border: 1px solid black; /* Add a border */
     padding: 10px; /* Add some padding for better spacing */
+    
   }
 

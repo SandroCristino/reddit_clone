@@ -38,7 +38,7 @@ export default function FeedList() {
   }, []);
 
   return (
-    <div className="d-flex justify-content-center">
+    <div className="d-flex justify-content-center mt-4">
     <div className="col-lg-6 d-flex flex-column justify-content-center">
       {feeds.map((feed) => (
         <div key={feed.id} className='feedContainer mb-4 shadow'>

@@ -9,10 +9,18 @@
     justify-content: center;
     align-items: center;
     z-index: 9999; /* Adjust the z-index to make sure it appears above other elements */
-  }
+}
   
-  .loading-spinner {
-    width: 100px;
-    height: 100px;
-  }
+.loading-spinner {
+  width: 100px;
+  height: 100px;
+}
+
+.feedButton {
+  margin-right: 15px;
+  margin-top: 15px;
+  margin-bottom: -30px;
+}
+
+
   
