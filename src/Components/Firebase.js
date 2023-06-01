@@ -3,8 +3,8 @@ import "firebase/firestore"
 import 'firebase/database'
 import { initializeApp } from "firebase/app"
 import { getStorage } from "firebase/storage";
-import { getFirestore } from 'firebase/firestore';
-import { v4 as uuidv4 } from 'uuid';
+import { getFirestore, setDoc, doc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { v4 as uuidv4, v4 } from 'uuid';
 
 import {
     GoogleAuthProvider,
@@ -61,6 +61,28 @@ const signInWithGoogle = async () => {
   }
 };
 
+// // Google authentication
+// const googleProvider = new GoogleAuthProvider();
+// const signInWithGoogle = async () => {
+//   try {
+//     const res = await signInWithPopup(auth, googleProvider);
+//     const user = res.user;
+//     const q = query(collection(db, "users"), where("uid", "==", user.uid));
+//     const docs = await getDocs(q);
+//     if (docs.docs.length === 0) {
+//       await addDoc(collection(db, "users"), {
+//         uid: user.uid,
+//         name: user.displayName,
+//         authProvider: "google",
+//         email: user.email,
+//       });
+//     }
+//   } catch (err) {
+//     console.error(err);
+//     alert(err.message);
+//   }
+// };
+
 
 
 // Email signin authentication
@@ -80,7 +102,7 @@ const registerWithEmailAndPassword = async (name, email, password) => {
     const res = await createUserWithEmailAndPassword(auth, email, password);
     const user = res.user;
 
-    await setDoc(doc(db, "users"), {
+    await setDoc(doc(db, `users/${user.uid}`), {
       uid: user.uid,
       name,
       authProvider: "local",
@@ -124,6 +146,27 @@ const logout = () => {
     signOut(auth);
 };
 
+async function updateServerData(fileSource, fileId, attribute, value) {
+  try {
+    await updateDoc(doc(db, `${fileSource}/${fileId}`), {
+        [attribute]: arrayUnion(value)
+    })
+  } catch (error) {
+      console.log(error)
+  }
+}
+async function updateReplaceServerData(fileSource, fileId, attribute, value) {
+  try {
+    await updateDoc(doc(db, `${fileSource}/${fileId}`), {
+        [attribute]: value
+    })
+  } catch (error) {
+      console.log(error)
+  }
+}
+
+
+
 export {
     auth,
     db,
@@ -133,4 +176,6 @@ export {
     sendPasswordReset,
     logout,
     storage,
+    updateServerData,
+    updateReplaceServerData,
 };

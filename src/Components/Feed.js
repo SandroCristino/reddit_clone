@@ -1,5 +1,5 @@
-import { updateDoc, doc } from 'firebase/firestore';
-import { db } from './Firebase';
+import { updateDoc, doc, getDocs, getDoc, collection } from 'firebase/firestore';
+import { db , updateServerData, updateReplaceServerData } from './Firebase';
 import React, { useState, useEffect } from 'react'
 import { useSelector } from 'react-redux';
 import { v4 as uuidv4 } from 'uuid';
@@ -17,32 +17,35 @@ export default function Feed({ picture, description, category, feedId, feedComme
 
     useEffect(() => {
         setRecentComments(commentList.slice(-3))
-        console.log(recentComments)
     },[commentList])
 
     useEffect(() => {
-
         // Update commentlist 
         if (commentList.length > 0 || newComment !== '') {
-          handleUploadComments();
+            updateReplaceServerData('feeds', feedId, 'commentList', commentList)
         }
-      }, [commentList, newComment]);
 
-    function increaseLikes() {
-        const newLikes = likes + 1
-        setLikes(newLikes);
-        handleUploadLikes(newLikes)
-        console.log(currentUser)
-    }
+        // Update likes
+        getLikesFromDB()
+      }, [commentList, newComment, likes]);
 
-    function decreaseLikes() {
-        const newLikes = likes - 1
-        if (newLikes >= 0) setLikes(newLikes)
-        handleUploadLikes(newLikes)
-    }
 
-    function likeAuthenticatior() {
-
+    async function getLikesFromDB() {
+        try {
+          const docRef = doc(db, 'feeds', feedId);
+          const docSnapshot = await getDoc(docRef);
+          
+          if (docSnapshot.exists()) {
+            const feedData = docSnapshot.data();
+            const likesArray = feedData.likes;
+            console.log(likesArray);
+            setLikes(likesArray)
+          } else {
+            console.log('Feed document does not exist.');
+          }
+        } catch (error) {
+          console.log(error);
+        }
     }
 
     function addComment() {
@@ -59,35 +62,36 @@ export default function Feed({ picture, description, category, feedId, feedComme
             id: uuidv4(),
             text: newComment,
             userName: currentUser.name,
+            userID: currentUser.uid,
             date: currentDate,
           };
     
           setCommentList([...commentList, comment]);
           setNewComment('');
         }
+
+        updateServerData('users', currentUser.uid, 'commentList', feedId)
     }
 
 
-    async function handleUploadLikes(newLikes) {
-        try {
-            await updateDoc(doc(db, `feeds/${feedId}`), {
-                likes: newLikes,
-            });
-        } catch (error) {
-            console.log(error);
-        }
+    async function handleUploadLikes() {
+        //Upload to feed data
+        updateServerData('feeds', feedId, 'likes', currentUser.uid)
+
+        // Upload to user data
+        updateServerData('users', currentUser.uid, 'likeList', feedId)
     }
 
-    async function handleUploadComments() {
-        try {
-            await updateDoc(doc(db, `feeds/${feedId}`), {
-                commentList: commentList,
-            });
-            console.log(likes);
-        } catch (error) {
-            console.log(error);
-        }
-    }
+    // async function handleUploadComments() {
+    //     try {
+    //         await updateDoc(doc(db, `feeds/${feedId}`), {
+    //             commentList: commentList,
+    //         });
+    //     } catch (error) {
+    //         console.log(error);
+    //     }
+    // }
+
 
     function toggleShowAllComments() {
         setShowAllComments(!showAllComments)
@@ -132,9 +136,8 @@ export default function Feed({ picture, description, category, feedId, feedComme
 
             {/* Like and Dislike */}
             <div className='d-flex mt-2 align-items-center'>
-                <div className='form-check-label'>{likes}</div>
-                <button className='mx-2 btn btn-light' onClick={increaseLikes}>👍</button>
-                <button className='btn btn-light' onClick={decreaseLikes}>👎</button>
+                <div className='form-check-label'>{likes.length}</div>
+                <button className='mx-2 btn btn-light' onClick={handleUploadLikes}>👍</button>
             </div>
 
             {/* Recent comments  */}

@@ -1,12 +1,13 @@
 import React, {useState} from 'react'
-import { db, storage } from './Firebase';
-import { serverTimestamp, doc, setDoc } from 'firebase/firestore';
+import { db, storage, updateServerData } from './Firebase';
+import { serverTimestamp, doc, setDoc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { ref, uploadBytes } from "firebase/storage";
 import { useSelector, useDispatch } from 'react-redux';
 import { setShowCreateFeed } from './userReducer';
 
 import { v4 as uuidv4 } from 'uuid';
 import '../Styles/CreateFeed.css'
+import { update } from 'firebase/database';
 
 export default function CreateFeed() {
     const [picture, setPicture] = useState('')
@@ -15,6 +16,7 @@ export default function CreateFeed() {
     const [loading, setLoading] = useState(false)
     const [likes] = useState(0)
     const [commentList] = useState([])
+    const currentUser = useSelector((state) => state.user.userData);
     const categoryOptions = ['Any', 'Gaming', 'Television', 'Crypto'];
     const showCreateFeed = useSelector((state) => state.user.showCreateFeed)
     const dispatch = useDispatch();
@@ -29,8 +31,9 @@ export default function CreateFeed() {
         dispatch(setShowCreateFeed(!showCreateFeed));
     };
 
-    async function handleUploadData() {
+    
 
+    async function handleUploadData() {
         if (!picture) return
 
         try {
@@ -45,15 +48,27 @@ export default function CreateFeed() {
                 console.log('Uploaded a blob or file!');
             });
 
+            // Set owner data
+            const newOwnerData = {
+                name: currentUser.name,
+                email: currentUser.email,
+                id: currentUser.uid,
+            }
+
             // Upload the description, category, and the picture URL to the database
             await setDoc(doc(db, `feeds/${feedId}`), {
                 id: feedId,
                 description,
                 category,
                 data: serverTimestamp(),
+                owner: newOwnerData,
                 likes,
                 commentList,
             })
+
+            // Assign to owner 
+            updateServerData('users',currentUser.uid, 'feedList', feedId)
+       
 
             // Reset
             setPicture('')
