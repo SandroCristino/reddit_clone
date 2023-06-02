@@ -1,19 +1,23 @@
 import { updateDoc, doc, getDocs, getDoc, collection } from 'firebase/firestore';
 import { db , updateServerData, updateReplaceServerData } from './Firebase';
 import React, { useState, useEffect } from 'react'
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
+import { setLoading, setLoadedObjects } from './userReducer';
+
 import { v4 as uuidv4 } from 'uuid';
 import '../Styles/Feed.css';
 
 
 export default function Feed({ picture, description, category, feedId, feedCommentList, feedLikes }) {
     const currentUser = useSelector((state) => state.user.userData);
+    const loadedObjects = useSelector((state) => state.user.loadedObjects)
     const [likes, setLikes] = useState(feedLikes)
     const [commentList, setCommentList] = useState(feedCommentList)
     const [newComment, setNewComment] = useState([])
     const [recentComments, setRecentComments] = useState([])
     const [showAllComments, setShowAllComments] = useState(false)
     const [textBox, setTextBox] = useState('Show More')
+    const dispatch = useDispatch();
 
     useEffect(() => {
         setRecentComments(commentList.slice(-2))
@@ -114,11 +118,15 @@ export default function Feed({ picture, description, category, feedId, feedComme
         );
     }
 
+    function handleDoneLoadingSignal() {
+        dispatch(setLoadedObjects(loadedObjects + 1));
+    }
+
     return (
         <div className='feed-container'>
             {/* Picture and Description */}
             <div className=''>
-                <img src={picture} alt="Should be a picture" className='picture'/>
+                <img src={picture} alt="Should be a picture" className='picture' onLoad={handleDoneLoadingSignal}/>
                 <h4 className='w-100 mt-3'>{categorySetter(category)} {description}</h4>
             </div>
 

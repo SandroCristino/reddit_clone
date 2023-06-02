@@ -5,6 +5,8 @@ const initialState = {
   name: null,
   userData: null,
   showCreateFeed: false,
+  loading: true,
+  loadedObjects: 0,
 };
 
 const userSlice = createSlice({
@@ -24,10 +26,16 @@ const userSlice = createSlice({
     setShowCreateFeed: (state, action) => {
       state.showCreateFeed = action.payload
     },
+    setLoading: (state, action) => {
+      state.loading = state.loading = false
+    },
+    setLoadedObjects: (state, action) => {
+      state.loadedObjects = action.payload
+    }
   },
 });
 
 
 
-export const { setUser, clearUser, setShowCreateFeed } = userSlice.actions;
+export const { setUser, clearUser, setShowCreateFeed, setLoading, setLoadedObjects } = userSlice.actions;
 export default userSlice.reducer

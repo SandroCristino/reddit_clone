@@ -2,12 +2,18 @@ import React, { useState, useEffect } from 'react';
 import { db, storage } from './Firebase';
 import { collection, getDocs } from 'firebase/firestore';
 import { getDownloadURL, ref } from 'firebase/storage';
+import { useDispatch, useSelector } from 'react-redux';
+import { setLoading } from './userReducer';
 import Feed from './Feed';
 import '../Styles/FeedList.css'
 
 export default function FeedList() {
   const [feeds, setFeeds] = useState([]);
   const [displayCount, setDisplayCount] = useState(5)
+  const [fetchFeedsLoading, setFetchFeedsLoading] = useState(true); 
+  const loadingFeets = useSelector((state) => state.user.loading)
+  const loadedObjects = useSelector((state) => state.user.loadedObjects);
+  const dispatch = useDispatch();
  
   useEffect(() => {
     const fetchFeeds = async () => {
@@ -32,11 +38,22 @@ export default function FeedList() {
         setFeeds(fetchedFeeds);
       } catch (error) {
         console.log(error);
-      } 
+      } finally {
+        setFetchFeedsLoading(false)
+      }
     };
 
     fetchFeeds();
   }, []);
+
+
+
+
+  useEffect(() => {
+    console.log(`Feeds lenght ${feeds.length}`)
+    console.log(`Loaded objects ${loadedObjects}`)
+    if (loadedObjects === feeds.length && !fetchFeedsLoading) dispatch(setLoading())
+  },[loadedObjects, feeds, loadingFeets])
 
   const handleLoadMore = () => {
     setDisplayCount(displayCount + 5);

@@ -1,10 +1,10 @@
 import React, { useEffect, useState } from "react";
-import { useAuthState, useSendSignInLinkToEmail } from "react-firebase-hooks/auth";
+import { useAuthState  } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
-import { auth, db, logout } from "../Components/Firebase.js";
-import { query, collection, getDocs, where, memoryLruGarbageCollector } from "firebase/firestore";
+import { auth, db } from "../Components/Firebase.js";
+import { query, collection, getDocs, where  } from "firebase/firestore";
 import { useDispatch, useSelector } from 'react-redux';
-import { setUser, clearUser, setShowCreateFeed } from './userReducer';
+import { setUser, setShowCreateFeed } from './userReducer';
 import Navbar from "./Navbar.js";
 import CreateFeed from "./CreateFeed.js";
 import AddFeedButton from "./AddFeedButton.js";
@@ -18,6 +18,7 @@ export default function MyProfile() {
   const [name, setName] = useState("");
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const loadingFeets = useSelector((state) => state.user.loading)
   const [showLoadingSpinner, setShowLoadingSpinner] = useState(false);
   const showCreateFeed = useSelector((state) => state.user.showCreateFeed)
 
@@ -32,6 +33,8 @@ export default function MyProfile() {
       alert("An error occurred while fetching user data");
     }
   };
+
+  // Keep loading while loading user data
   useEffect(() => {
     if (loading) {
       setShowLoadingSpinner(true);
@@ -41,22 +44,19 @@ export default function MyProfile() {
       fetchUserName();
       const userData = { ...user, name };
       dispatch(setUser(userData));
-      setShowLoadingSpinner(false);
+      // setShowLoadingSpinner(true);
     }
   }, [user, loading, navigate, dispatch, name]);
 
 
+  // Keep loading scene while fetching/ displaying data
   useEffect(() => {
-    if (loading) dispatch(setShowCreateFeed(true))
-    if (!loading) {
-      setShowLoadingSpinner(true)
-      const timeout = setTimeout(() => {
-        setShowLoadingSpinner(false);
-      }, 1000);
-      return () => clearTimeout(timeout);
+    if (!loadingFeets) {
+      setShowLoadingSpinner(false)
     }
-  }, [loading]);
+  }, [loading, loadingFeets, showLoadingSpinner]);
 
+  // Handle createFeed button
   const handleToggleCreateFeed = () => {
     dispatch(setShowCreateFeed(!showCreateFeed));
   };
