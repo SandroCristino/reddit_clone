@@ -7,7 +7,8 @@ import '../Styles/FeedList.css'
 
 export default function FeedList() {
   const [feeds, setFeeds] = useState([]);
-
+  const [displayCount, setDisplayCount] = useState(5)
+ 
   useEffect(() => {
     const fetchFeeds = async () => {
       try {
@@ -37,10 +38,14 @@ export default function FeedList() {
     fetchFeeds();
   }, []);
 
+  const handleLoadMore = () => {
+    setDisplayCount(displayCount + 5);
+  };
+
   return (
     <div className="d-flex justify-content-center mt-4">
     <div className="col-lg-6 d-flex flex-column justify-content-center">
-      {feeds.map((feed) => (
+      {feeds.slice(0, displayCount).map((feed) => (
         <div key={feed.id} className='feedContainer mb-4 shadow'>
             <Feed 
             picture={feed.pictureUrl} 
@@ -52,7 +57,9 @@ export default function FeedList() {
             />
         </div>
       ))}
+      <button onClick={handleLoadMore} className='btn btn-light'>More Feeds</button>
     </div>
+    
   </div>
   );
 }

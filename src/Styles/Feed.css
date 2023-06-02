@@ -14,7 +14,11 @@
 .feed-comment {
     width: 100%;
     word-wrap: break-word;
+}
 
+.feed-comment-list {
+    max-height: 400px;
+    overflow-y: auto;
 }
 
 textarea {

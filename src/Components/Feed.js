@@ -16,7 +16,7 @@ export default function Feed({ picture, description, category, feedId, feedComme
     const [textBox, setTextBox] = useState('Show More')
 
     useEffect(() => {
-        setRecentComments(commentList.slice(-3))
+        setRecentComments(commentList.slice(-2))
     },[commentList])
 
     useEffect(() => {
@@ -129,14 +129,15 @@ export default function Feed({ picture, description, category, feedId, feedComme
             </div>
 
             {/* Recent comments  */}
-            <div>
+            <div className='feed-comment-list'>
+            <button className='btn text-info mt-2 mx-3 mb-2' onClick={toggleShowAllComments}>{textBox}</button>
+
                 <ul className='list-group'>
                 { showAllComments 
                     ? commentList.map((comment) => (renderCommentList(comment)))
                     : recentComments.map((comment) => ( renderCommentList(comment)))
                 }
                 </ul>
-                <button className='btn text-info mt-2' onClick={toggleShowAllComments}>{textBox}</button>
             </div>
 
             {/* Write own comment */}
