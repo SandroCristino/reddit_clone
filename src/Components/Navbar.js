@@ -1,5 +1,5 @@
-import React, { useState, navigate} from 'react';
-import { Link } from 'react-router-dom';
+import React, { useState} from 'react';
+import { Link, useNavigate } from 'react-router-dom';
 import '../Styles/Navbar.css';
 import { useSelector, useDispatch } from 'react-redux';
 import { clearUser, setLoading } from './userReducer';
@@ -11,7 +11,6 @@ import { logout } from "../Components/Firebase.js";
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const user = useSelector(state => state.user); // Retrieve the user state from Redux
-  const dispatch = useDispatch()
 
 
   const toggleNavbar = () => {
@@ -26,8 +25,9 @@ export default function Navbar() {
   }
 
   const handlePageChange = () => {
-    debugger
-    navigate('/my_profile'); // Navigate to the new URL without full page reload
+    // setTimeout(() => {
+    //   window.location.reload(); // Reload the page after a delay
+    // }, 100);
   }
 
   return (

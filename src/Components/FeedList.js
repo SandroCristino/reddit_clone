@@ -97,7 +97,7 @@ export default function FeedList({isUserPage}) {
       }
 
       {feeds.length > 0 
-      ? <button onClick={handleLoadMore} className='btn btn-light'>More Feeds</button>
+      ? <button onClick={handleLoadMore} className='btn btn-light mb-5'>More Feeds</button>
       : ''
       }
     </div>
