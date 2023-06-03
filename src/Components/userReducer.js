@@ -27,7 +27,7 @@ const userSlice = createSlice({
       state.showCreateFeed = action.payload
     },
     setLoading: (state, action) => {
-      state.loading = state.loading = false
+      state.loading = action.payload
     },
     setLoadedObjects: (state, action) => {
       state.loadedObjects = action.payload

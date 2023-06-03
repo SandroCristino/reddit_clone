@@ -78,6 +78,7 @@ export default function CreateFeed() {
         } finally {
             setLoading(false)
             handleToggleCreateFeed()
+            window.location.reload()
         }
     }
     return (

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useAuthState  } from "react-firebase-hooks/auth";
 import { useNavigate } from "react-router-dom";
-import { auth, db } from "../Components/Firebase.js";
+import { auth, db, getUserServerData } from "../Components/Firebase.js";
 import { query, collection, getDocs, where  } from "firebase/firestore";
 import { useDispatch, useSelector } from 'react-redux';
 import { setUser, setShowCreateFeed } from './userReducer';
@@ -24,13 +24,11 @@ export default function MyProfile() {
 
   const fetchUserName = async () => {
     try {
-      const q = query(collection(db, "users"), where("uid", "==", user?.uid));
-      const doc = await getDocs(q);
-      const data = doc.docs[0].data();
-      setName(data.name);
-    } catch (err) {
-      console.error(err);
-      alert("An error occurred while fetching user data");
+      const fetchedUserData = await getUserServerData(user?.uid)
+      setName(fetchedUserData.name)
+
+    } catch (error) {
+      console.log(error)
     }
   };
 
@@ -44,7 +42,6 @@ export default function MyProfile() {
       fetchUserName();
       const userData = { ...user, name };
       dispatch(setUser(userData));
-      // setShowLoadingSpinner(true);
     }
   }, [user, loading, navigate, dispatch, name]);
 
@@ -65,13 +62,6 @@ export default function MyProfile() {
     <div>
     <Navbar />
 
-    {/* Loading */}
-    {showLoadingSpinner && (
-        <div className="loading-overlay">
-          <img src={loadingSpinner} alt="Loading" className="loading-spinner" />
-        </div>
-    )}
-
     {/* Create Feed    */}
     <div className="d-flex justify-content-end feedButton">
       <div onClick={handleToggleCreateFeed} >
@@ -79,11 +69,23 @@ export default function MyProfile() {
       </div>
     </div>
 
+    {/* Headline */}
+    <div className="d-flex justify-content-center">
+      <h1 className="text-center p-1 mt-3 w-50 bg-light bg-gradient rounded shadow">Your Feeds</h1>
+    </div>
+
+    {/* Loading */}
+    {showLoadingSpinner && (
+        <div className="loading-overlay">
+          <img src={loadingSpinner} alt="Loading" className="loading-spinner" />
+        </div>
+    )}
+
     {showCreateFeed && <CreateFeed />}
     
 
     {/* Display feed */}
-    <FeedList />
+    <FeedList isUserPage={true} />
 
     <div className="dashboard__container">
       Logged in as

@@ -165,6 +165,18 @@ async function updateReplaceServerData(fileSource, fileId, attribute, value) {
   }
 }
 
+async function getUserServerData(userUid) {
+  try {
+    const q = query(collection(db, 'users'), where("uid", "==", userUid));
+    const doc = await getDocs(q);
+    const data = doc.docs[0].data();
+    return data;
+  } catch (err) {
+    console.error(err);
+    alert("An error occurred while fetching user data");
+  }
+}
+
 
 
 export {
@@ -178,4 +190,5 @@ export {
     storage,
     updateServerData,
     updateReplaceServerData,
+    getUserServerData,
 };

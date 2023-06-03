@@ -1,16 +1,17 @@
-import React, { useState } from 'react';
+import React, { useState, navigate} from 'react';
 import { Link } from 'react-router-dom';
 import '../Styles/Navbar.css';
-import { useSelector } from 'react-redux';
-import { clearUser } from './userReducer';
+import { useSelector, useDispatch } from 'react-redux';
+import { clearUser, setLoading } from './userReducer';
 import { logout } from "../Components/Firebase.js";
 
 
 
 
-export default function Navbar(props) {
+export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const user = useSelector(state => state.user); // Retrieve the user state from Redux
+  const dispatch = useDispatch()
 
 
   const toggleNavbar = () => {
@@ -21,8 +22,12 @@ export default function Navbar(props) {
     logout()
     clearUser()
     localStorage.clear()
-    window.location.reload() // Reload the window
+    window.location.reload() 
+  }
 
+  const handlePageChange = () => {
+    debugger
+    navigate('/my_profile'); // Navigate to the new URL without full page reload
   }
 
   return (
@@ -57,7 +62,7 @@ export default function Navbar(props) {
             {user.isLoggedIn ? (
             <>
               <li className="nav-item mx-2">
-                <Link className="nav-link btn border" to="/my_profile">
+                <Link className="nav-link btn border" to="/my_profile" onClick={handlePageChange}>
                   Hey, {user.name}
                 </Link>
               </li>
