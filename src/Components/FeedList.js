@@ -8,6 +8,7 @@ import Feed from './Feed';
 import '../Styles/FeedList.css'
 
 export default function FeedList({isUserPage}) {
+  const [totalFeedsCount, setTotalFeedsCount] = useState('')
   const [feeds, setFeeds] = useState([]);
   const [userFeeds, setUserFeeds] = useState([])
   const currentUser = useSelector((state) => state.user.userData);
@@ -55,7 +56,6 @@ export default function FeedList({isUserPage}) {
         console.log(error);
       } finally {
         setFetchFeedsLoading(false)
-        // updateUserFeeds()
       }
     };
 
@@ -65,7 +65,7 @@ export default function FeedList({isUserPage}) {
   useEffect(() => {
     console.log(`Feeds lenght ${feeds.length}`)
     console.log(`Loaded objects ${loadedObjects}`)
-    if (loadedObjects === feeds.length && !fetchFeedsLoading) dispatch(setLoading(false))
+    if (loadedObjects === displayCount || feeds.length === loadedObjects && !fetchFeedsLoading) dispatch(setLoading(false))
   },[loadedObjects, feeds, loadingFeets])
 
   const handleLoadMore = () => {
@@ -96,7 +96,7 @@ export default function FeedList({isUserPage}) {
           )
       }
 
-      {feeds.length > 0 
+      {feeds.length > 0 && feeds.length > loadedObjects
       ? <button onClick={handleLoadMore} className='btn btn-light mb-5'>More Feeds</button>
       : ''
       }

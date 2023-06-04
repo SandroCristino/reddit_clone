@@ -83,6 +83,8 @@ export default function Feed({ picture, description, category, feedId, feedComme
 
         // Upload to user data
         updateServerData('users', currentUser.uid, 'likeList', feedId)
+
+        setLikes(likes + 1)
     }
 
     function toggleShowAllComments() {
