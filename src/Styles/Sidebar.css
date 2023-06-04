@@ -11,7 +11,7 @@
     cursor: pointer;
 }
 
-.btn:hover, .topic-btn:hover {
+.btn:hover {
     transform: scale(1.2);
 }
   

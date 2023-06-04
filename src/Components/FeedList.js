@@ -36,8 +36,11 @@ export default function FeedList({isUserPage}) {
           const pictureURL = await getDownloadURL(pictureRef);
 
           // Fetch user data
-          const fetchedUserData = await getUserServerData(currentUser.uid)
-          const userData = fetchedUserData.feedList
+          if (currentUser !== null) {
+            var fetchedUserData = await getUserServerData(currentUser.uid)
+            var userData = fetchedUserData.feedList
+          }
+       
 
           // Add to feeds. Either user or general
           if (isUserPage) {

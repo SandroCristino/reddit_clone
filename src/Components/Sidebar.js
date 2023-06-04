@@ -1,16 +1,25 @@
 import React from 'react';
+import { useDispatch } from 'react-redux';
+import { setSorting } from './userReducer';
+
 import '@fortawesome/fontawesome-free/css/all.min.css';
 import '../Styles/Sidebar.css';
 
 const Sidebar = () => {
-  return (
+    const dispatch = useDispatch()
+
+    const handleChangeSorting = (whatToSort) => {
+        dispatch(setSorting(whatToSort))
+    }
+
+    return (
     <div className="sidebar">
         <br />
         <p className='topic-btn'>
             <i class="bi bi-rss-fill mx-1"></i>
             Feeds
         </p>
-        <button className="btn">
+        <button className="btn" onClick={handleChangeSorting('popular')}>
             <i class="bi bi-bullseye mx-1"></i>
             Popular
         </button>
@@ -20,15 +29,15 @@ const Sidebar = () => {
             <i class="bi bi-filter-square-fill mx-1"></i>
             Topics
         </p>
-        <button className="btn">
+        <button className="btn" onClick={handleChangeSorting('gaming')}>
             <i class="bi bi-joystick mx-1"></i>
             Gaming
         </button>
-        <button className="btn">
+        <button className="btn" onClick={handleChangeSorting('crypto')}>
             <i class="bi bi-currency-bitcoin mx-1"></i>
             Crypto
         </button>
-        <button className="btn">
+        <button className="btn" onClick={handleChangeSorting('television')}>
             <i class="bi bi-tv-fill mx-1"></i>
             Television
         </button>

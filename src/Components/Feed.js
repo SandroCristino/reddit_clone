@@ -78,12 +78,13 @@ export default function Feed({ picture, description, category, feedId, feedComme
 
 
     async function handleUploadLikes() {
-        //Upload to feed data
+        // Upload to feed data
         updateServerData('feeds', feedId, 'likes', currentUser.uid)
 
         // Upload to user data
         updateServerData('users', currentUser.uid, 'likeList', feedId)
 
+        // Immediately change likes
         setLikes(likes + 1)
     }
 
