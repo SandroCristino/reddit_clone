@@ -2,9 +2,11 @@
     width: 600px;
 }
 
-.feedContainer {
+.feedlist-container {
     background-color: #f7f7f7;
     padding-bottom: 20px;
     padding-top: 20px;
     border-radius: 10px;
+    width: 624px;
 }
+

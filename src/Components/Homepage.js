@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import Navbar from './Navbar';
 import Sidebar from './Sidebar';
-import { useSelector } from 'react-redux';
+import SummarizeMainContent from "./SummarizeMainContent";
 
 export default function Homepage() {
   
@@ -9,6 +9,7 @@ export default function Homepage() {
     <div>
       <Navbar />
       <Sidebar />
+      <SummarizeMainContent />
     </div>
   );
 }

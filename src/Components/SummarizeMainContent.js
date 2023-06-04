@@ -10,7 +10,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setUser, setShowCreateFeed } from './userReducer';
 import Navbar from "./Navbar.js";
 import loadingSpinner from "../Assets/loading-spinner.gif";
-import '../Styles/MyProfile.css'
+import '../Styles/SummarizeMainContent.css'
 
 export default function SummarizeMainContent({isUserPage}) {
     const [user, loading] = useAuthState(auth);
@@ -43,10 +43,17 @@ export default function SummarizeMainContent({isUserPage}) {
     };
   
     return (
-    <div>
+    <div className='mt-5'>
+
+     {/* Loading */}
+     {showLoadingSpinner && (
+          <div className="loading-overlay">
+            <img src={loadingSpinner} alt="Loading" className="loading-spinner" />
+          </div>
+      )}
 
       {/* Create Feed    */}
-      <div className="d-flex justify-content-end feedButton">
+      <div className="d-flex justify-content-end feed-button">
         <div onClick={handleToggleCreateFeed} >
         <AddFeedButton />
         </div>
@@ -54,20 +61,13 @@ export default function SummarizeMainContent({isUserPage}) {
   
       {/* Headline */}
       <div className="d-flex justify-content-center">
-        <h1 className="text-center p-1 mt-3 w-50 bg-light bg-gradient rounded shadow">Your Feeds</h1>
+        <h1 className="text-center p-1 mt-3 bg-light bg-gradient rounded shadow main-content-headline">Your Feeds</h1>
       </div>
-  
-      {/* Loading */}
-      {showLoadingSpinner && (
-          <div className="loading-overlay">
-            <img src={loadingSpinner} alt="Loading" className="loading-spinner" />
-          </div>
-      )}
   
       {showCreateFeed && <CreateFeed />}
       
       {/* Display feed */}
-      <FeedList isUserPage={true} />
+      <FeedList isUserPage={isUserPage} />
       
     </div>
     );

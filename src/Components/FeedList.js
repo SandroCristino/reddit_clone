@@ -74,7 +74,7 @@ export default function FeedList({isUserPage}) {
 
   return (
     <div className="d-flex justify-content-center mt-4">
-    <div className="col-lg-6 d-flex flex-column justify-content-center">
+    <div className="d-flex flex-column justify-content-center">
       {feeds.length === 0 
       ? (
         <div className="d-flex justify-content-center">
@@ -82,7 +82,7 @@ export default function FeedList({isUserPage}) {
         </div>
       ) : (
             feeds.slice(0, displayCount).map((feed) => (
-              <div key={feed.id} className='feedContainer mb-4 shadow'>
+              <div key={feed.id} className='feedlist-container mb-4 shadow'>
                   <Feed 
                   picture={feed.pictureUrl} 
                   description={feed.description} 

@@ -11,7 +11,7 @@ import { logout } from "../Components/Firebase.js";
 export default function Navbar() {
   const [isOpen, setIsOpen] = useState(false);
   const user = useSelector(state => state.user); // Retrieve the user state from Redux
-
+  const navigate = useNavigate(0)
 
   const toggleNavbar = () => {
     setIsOpen(!isOpen);
@@ -24,17 +24,16 @@ export default function Navbar() {
     window.location.reload() 
   }
 
-  const handlePageChange = () => {
-    // setTimeout(() => {
-    //   window.location.reload(); // Reload the page after a delay
-    // }, 100);
+  const handlePageChange = (whereTo) => {
+    navigate(whereTo)
+    navigate(0)
   }
 
   return (
-    <nav className="navbar navbar-expand-lg bg-light">
+    <nav className="navbar navbar-expand-lg bg-light fixed-top">
       <div className="navbar">
 
-        <Link className="navbar-brand mx-3" to="/">
+        <Link className="navbar-brand mx-3" onClick={() => handlePageChange('/')}>
           <i class="bi bi-reddit mx-2"></i>  
           Wezzy
         </Link>
@@ -62,7 +61,7 @@ export default function Navbar() {
             {user.isLoggedIn ? (
             <>
               <li className="nav-item mx-2">
-                <Link className="nav-link btn border" to="/my_profile" onClick={handlePageChange}>
+                <Link className="nav-link btn border" onClick={() => handlePageChange('/my_profile')}>
                   Hey, {user.name}
                 </Link>
               </li>
