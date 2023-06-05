@@ -13,19 +13,23 @@ import loadingSpinner from "../Assets/loading-spinner.gif";
 import '../Styles/SummarizeMainContent.css'
 
 export default function SummarizeMainContent({isUserPage}) {
-    const [user, loading] = useAuthState(auth);
+    const [user, loading] = useAuthState(auth)
+    const [userLoggedState, setUserLoggedState] = useState(false)
+    const [showLoadingSpinner, setShowLoadingSpinner] = useState(false)
+    const loadingFeets = useSelector((state) => state.user.loading)
+    const showCreateFeed = useSelector((state) => state.user.showCreateFeed)
     const navigate = useNavigate();
     const dispatch = useDispatch();
-    const loadingFeets = useSelector((state) => state.user.loading)
-    const [showLoadingSpinner, setShowLoadingSpinner] = useState(false);
-    const showCreateFeed = useSelector((state) => state.user.showCreateFeed)
-  
   
     // Keep loading while loading user data
     useEffect(() => {
       if (loading) {
         setShowLoadingSpinner(true);
         return;
+      }
+      const storedData = JSON.parse(localStorage.getItem('user'))
+      if (storedData) {
+        if (storedData.isLoggedIn === true) setUserLoggedState(true)
       }
     }, [user, loading, navigate, dispatch]);
   
@@ -41,17 +45,6 @@ export default function SummarizeMainContent({isUserPage}) {
     const handleToggleCreateFeed = () => {
       dispatch(setShowCreateFeed(!showCreateFeed));
     };
-
-    // useEffect(() => {
-    //   if (user) {
-    //     const fetchUserData = async () => {
-    //       const currentUser = await getUserServerData(user.uid);
-    //       dispatch(setUser(currentUser));
-    //     };
-  
-    //     fetchUserData();
-    //   }
-    // }, [user, dispatch]);
   
     return (
     <div className='mt-5'>
@@ -63,19 +56,21 @@ export default function SummarizeMainContent({isUserPage}) {
           </div>
       )}
 
-      {/* Create Feed    */}
+      {/* Create Feed */}
       <div className="d-flex justify-content-end feed-button">
         <div onClick={handleToggleCreateFeed} >
-        <AddFeedButton />
+        {  userLoggedState &&
+          <AddFeedButton />
+        }
         </div>
       </div>
   
       {/* Headline */}
-      <div className="d-flex justify-content-center">
+      <div className="d-flex justify-content-center mt-3">
         <h1 className="text-center p-1 mt-3 bg-light bg-gradient rounded shadow main-content-headline">Your Feeds</h1>
       </div>
   
-      {showCreateFeed && <CreateFeed />}
+      {   showCreateFeed && <CreateFeed />}
       
       {/* Display feed */}
       <FeedList isUserPage={isUserPage} />

@@ -5,13 +5,12 @@ import { useAuthState } from "react-firebase-hooks/auth"
 import { getUserServerData } from '../Components/Firebase.js'
 import { useDispatch } from 'react-redux'
 import { setUser } from "./userReducer.js"
-import { GoogleAuthProvider } from 'firebase/auth'
 
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("")
-  const [user, loading, error] = useAuthState(auth)
+  const [user, loading] = useAuthState(auth)
   const [text, setText] = useState('')
   const navigate = useNavigate()
   const dispatch = useDispatch()
@@ -22,7 +21,10 @@ export default function SignIn() {
       return;
     }
     const storedData = JSON.parse(localStorage.getItem('user'))
-    if (storedData.isLoggedIn === true) navigate("/my_profile")
+    if (storedData.isLoggedIn === true) {
+      navigate("/my_profile")
+      navigate(0)
+    }
   }, [user, loading, localStorage])
 
   const handleSignIn = async () => {

@@ -21,7 +21,7 @@ export default function Navbar() {
     await logout()
     await clearUser()
     localStorage.clear()
-    window.location.reload() 
+    navigate(0)
   }
 
   const handlePageChange = (whereTo) => {

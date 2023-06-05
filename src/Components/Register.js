@@ -45,8 +45,11 @@ export default function Register() {
     useEffect(() => {
         if (loading) return;
         const storedData = JSON.parse(localStorage.getItem('user'))
-        if (storedData.isLoggedIn === true) navigate("/my_profile")
-    }, [user, loading, navigate]);
+        if (storedData.isLoggedIn === true) {
+            navigate("/my_profile")
+            navigate(0)
+        }
+        }, [user, loading, navigate])
 
     useEffect(() => {
         setText('')

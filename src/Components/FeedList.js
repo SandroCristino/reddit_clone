@@ -82,7 +82,6 @@ export default function FeedList({isUserPage}) {
 
       // Sort regarding to likes
       const newFeeds = [...originalFeeds] 
-      debugger
       
       newFeeds.sort((a, b) => {
         console.log('Feed A likes:', a.likes.length);
