@@ -7,7 +7,7 @@ const initialState = {
   showCreateFeed: false,
   loading: true,
   loadedObjects: 0,
-  sorting: 'none',
+  sorting: 'Any',
 };
 
 const userSlice = createSlice({

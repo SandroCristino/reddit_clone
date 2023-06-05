@@ -19,9 +19,13 @@ const Sidebar = () => {
             <i class="bi bi-rss-fill mx-1"></i>
             Feeds
         </p>
-        <button className="btn" onClick={handleChangeSorting('popular')}>
+        <button className="btn" onClick={() => handleChangeSorting('Popular')}>
             <i class="bi bi-bullseye mx-1"></i>
             Popular
+        </button>
+        <button className="btn" onClick={() => handleChangeSorting('Any')}>
+            <i class="bi bi-bullseye mx-1"></i>
+            Recent
         </button>
         <hr />
         <br />
@@ -29,15 +33,15 @@ const Sidebar = () => {
             <i class="bi bi-filter-square-fill mx-1"></i>
             Topics
         </p>
-        <button className="btn" onClick={handleChangeSorting('gaming')}>
+        <button className="btn" onClick={() => handleChangeSorting('Gaming')}>
             <i class="bi bi-joystick mx-1"></i>
             Gaming
         </button>
-        <button className="btn" onClick={handleChangeSorting('crypto')}>
+        <button className="btn" onClick={() => handleChangeSorting('Crypto')}>
             <i class="bi bi-currency-bitcoin mx-1"></i>
             Crypto
         </button>
-        <button className="btn" onClick={handleChangeSorting('television')}>
+        <button className="btn" onClick={() => handleChangeSorting('Television')}>
             <i class="bi bi-tv-fill mx-1"></i>
             Television
         </button>

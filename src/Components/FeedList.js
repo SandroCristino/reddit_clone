@@ -1,29 +1,29 @@
-import React, { useState, useEffect } from 'react';
-import { db, storage, getUserServerData } from './Firebase';
-import { collection, getDocs } from 'firebase/firestore';
-import { getDownloadURL, ref } from 'firebase/storage';
-import { useDispatch, useSelector } from 'react-redux';
-import { setLoading } from './userReducer';
-import Feed from './Feed';
+import React, { useState, useEffect } from 'react'
+import { db, storage, getUserServerData } from './Firebase'
+import { collection, getDocs } from 'firebase/firestore'
+import { getDownloadURL, ref } from 'firebase/storage'
+import { useDispatch, useSelector } from 'react-redux'
+import { setLoading } from './userReducer'
+import Feed from './Feed'
 import '../Styles/FeedList.css'
 
 export default function FeedList({isUserPage}) {
-  const [totalFeedsCount, setTotalFeedsCount] = useState('')
-  const [feeds, setFeeds] = useState([]);
-  const [userFeeds, setUserFeeds] = useState([])
-  const currentUser = useSelector((state) => state.user.userData);
+  const [feeds, setFeeds] = useState([])
+  const [originalFeeds, setOriginalFeeds] = useState([])
   const [displayCount, setDisplayCount] = useState(5)
-  const [fetchFeedsLoading, setFetchFeedsLoading] = useState(true); 
+  const [fetchFeedsLoading, setFetchFeedsLoading] = useState(true)
   const loadingFeets = useSelector((state) => state.user.loading)
-  const loadedObjects = useSelector((state) => state.user.loadedObjects);
-  const dispatch = useDispatch();
+  const loadedObjects = useSelector((state) => state.user.loadedObjects)
+  const currentUser = useSelector((state) => state.user.userData)
+  const sorting = useSelector((state) => state.user.sorting)
+  const dispatch = useDispatch()
  
   useEffect(() => {
     const fetchFeeds = async () => {
       try {
         // Fetch data from database
-        const querySnapshot = await getDocs(collection(db, 'feeds'));
-        const fetchedFeeds = [];
+        const querySnapshot = await getDocs(collection(db, 'feeds'))
+        const fetchedFeeds = []
 
         for (const doc of querySnapshot.docs) {
           const feed = {
@@ -32,13 +32,13 @@ export default function FeedList({isUserPage}) {
           };
 
           // Fetch the download URL for the picture from Firebase Storage
-          const pictureRef = ref(storage, `images/${feed.id}`);
-          const pictureURL = await getDownloadURL(pictureRef);
+          const pictureRef = ref(storage, `images/${feed.id}`)
+          const pictureURL = await getDownloadURL(pictureRef)
 
           // Check if user logged in
           if (currentUser !== null) {
 
-             // Fetch user data
+            // Fetch user data
             var fetchedUserData = await getUserServerData(currentUser.uid)
             var userData = fetchedUserData.feedList
           
@@ -52,11 +52,11 @@ export default function FeedList({isUserPage}) {
               feed.pictureUrl = pictureURL;
               fetchedFeeds.push(feed);
             }
-
-        }
-         
+ 
+          }
         }
         setFeeds(fetchedFeeds);
+        setOriginalFeeds(fetchedFeeds);
       } catch (error) {
         console.log(error);
       } finally {
@@ -73,9 +73,39 @@ export default function FeedList({isUserPage}) {
     if ((loadedObjects === displayCount || feeds.length === loadedObjects) && !fetchFeedsLoading) dispatch(setLoading(false))
   },[loadedObjects, feeds, loadingFeets])
 
+  useEffect(() => {
+    handleResorting()
+  },[sorting])
+
+  const handleResorting = async () => {
+    if (sorting === 'Popular') {
+
+      // Sort regarding to likes
+      const newFeeds = [...originalFeeds] 
+      debugger
+      
+      newFeeds.sort((a, b) => {
+        console.log('Feed A likes:', a.likes.length);
+        console.log('Feed B likes:', b.likes.length);
+        return b.likes.length - a.likes.length;
+      });
+      
+      setFeeds(newFeeds)
+    } else if (sorting === 'Any') {
+
+      // Display all feeds
+      setFeeds(originalFeeds)
+    } else {
+
+      // Sort regarding topic
+      const newFeeds = await originalFeeds.filter((feed) => feed.category === sorting);
+      setFeeds(newFeeds)
+    }
+  }
+
   const handleLoadMore = () => {
-    setDisplayCount(displayCount + 5);
-  };
+    setDisplayCount(displayCount + 5)
+  }
 
   return (
     <div className="d-flex justify-content-center mt-4">

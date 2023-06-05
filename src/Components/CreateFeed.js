@@ -14,7 +14,7 @@ export default function CreateFeed() {
     const [description, setDescription] = useState('')
     const [category, setCategory] = useState('Any')
     const [loading, setLoading] = useState(false)
-    const [likes] = useState(0)
+    const [likes] = useState([])
     const [commentList] = useState([])
     const currentUser = useSelector((state) => state.user.userData);
     const categoryOptions = ['Any', 'Gaming', 'Television', 'Crypto'];

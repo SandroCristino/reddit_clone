@@ -94,14 +94,6 @@ const signInWithGoogle = async () => {
 const logInWithEmailAndPassword = async (email, password) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
-      // console.log(result)
-      // console.log(`Auth in Firebase: ${auth}`)
-      // const userUid = auth.currentUser.uid;
-      // const currentUser = await getUserServerData(userUid);
-      // console.log(currentUser)
-      // debugger
-      // await dispatch(setUser(currentUser));
-
       return true
     } catch (err) {
       console.error(err);
@@ -136,23 +128,6 @@ const registerWithEmailAndPassword = async (name, email, password) => {
   } 
 };
 
-// // Email registration 
-// const registerWithEmailAndPassword = async (name, email, password) => {
-//   try {
-//     const res = await createUserWithEmailAndPassword(auth, email, password);
-//     const user = res.user;
-//     await addDoc(collection(db, "users"), {
-//       uid: user.uid,
-//       name,
-//       authProvider: "local",
-//       email,
-//     });
-//   } catch (err) {
-//     console.error(err);
-//   }
-// };
-
-
 // Email password reset
 const sendPasswordReset = async (email) => {
     try {
@@ -170,6 +145,7 @@ const logout = () => {
     signOut(auth);
 };
 
+// Update server data with specific parameter
 async function updateServerData(fileSource, fileId, attribute, value) {
   try {
     await updateDoc(doc(db, `${fileSource}/${fileId}`), {
@@ -179,6 +155,8 @@ async function updateServerData(fileSource, fileId, attribute, value) {
       console.log(error)
   }
 }
+
+// Replace server data with specific parameter
 async function updateReplaceServerData(fileSource, fileId, attribute, value) {
   try {
     await updateDoc(doc(db, `${fileSource}/${fileId}`), {
@@ -189,6 +167,7 @@ async function updateReplaceServerData(fileSource, fileId, attribute, value) {
   }
 }
 
+// Get user data 
 async function getUserServerData(userUid) {
   try {
     const q = query(collection(db, 'users'), where("uid", "==", userUid));
