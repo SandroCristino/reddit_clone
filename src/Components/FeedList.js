@@ -35,23 +35,25 @@ export default function FeedList({isUserPage}) {
           const pictureRef = ref(storage, `images/${feed.id}`);
           const pictureURL = await getDownloadURL(pictureRef);
 
-          // Fetch user data
+          // Check if user logged in
           if (currentUser !== null) {
+
+             // Fetch user data
             var fetchedUserData = await getUserServerData(currentUser.uid)
             var userData = fetchedUserData.feedList
-          }
-       
-
-          // Add to feeds. Either user or general
-          if (isUserPage) {
-            if (userData.findIndex(userFeed => userFeed === feed.id) >= 0) {
+          
+            // Add to feeds. Either user or general
+            if (isUserPage) {
+              if (userData.findIndex(userFeed => userFeed === feed.id) >= 0) {
+                feed.pictureUrl = pictureURL;
+                fetchedFeeds.push(feed);          
+              }
+            } else {
               feed.pictureUrl = pictureURL;
-              fetchedFeeds.push(feed);          
+              fetchedFeeds.push(feed);
             }
-          } else {
-            feed.pictureUrl = pictureURL;
-            fetchedFeeds.push(feed);
-          }
+
+        }
          
         }
         setFeeds(fetchedFeeds);
@@ -68,7 +70,7 @@ export default function FeedList({isUserPage}) {
   useEffect(() => {
     console.log(`Feeds lenght ${feeds.length}`)
     console.log(`Loaded objects ${loadedObjects}`)
-    if (loadedObjects === displayCount || feeds.length === loadedObjects && !fetchFeedsLoading) dispatch(setLoading(false))
+    if ((loadedObjects === displayCount || feeds.length === loadedObjects) && !fetchFeedsLoading) dispatch(setLoading(false))
   },[loadedObjects, feeds, loadingFeets])
 
   const handleLoadMore = () => {

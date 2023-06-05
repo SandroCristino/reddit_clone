@@ -13,16 +13,23 @@ const store = configureStore({
 store.subscribe(() => {
   const { user } = store.getState();
   const { isLoggedIn, userData, showCreateFeed } = user;
-  localStorage.setItem('user', JSON.stringify({ isLoggedIn, userData, showCreateFeed }));
-});
+  try {
+    localStorage.setItem('user', JSON.stringify({ isLoggedIn, userData, showCreateFeed }));
+  } catch (error) {
+    console.log(`Problem setItem localStorage: ${error}`)
+  }});
 
 // Rehydrate the user state from local storage
-const persistedUserState = localStorage.getItem('user');
-if (persistedUserState) {
-  const { isLoggedIn, userData } = JSON.parse(persistedUserState);
-  if (isLoggedIn) {
-    store.dispatch(setUser(userData));
-  } 
+try {
+  const persistedUserState = localStorage.getItem('user');
+  if (persistedUserState) {
+    const { isLoggedIn, userData } = JSON.parse(persistedUserState);
+    if (isLoggedIn) {
+      store.dispatch(setUser(userData));
+    } 
+  }
+} catch (error) {
+  console.log(`Problem getItem localStorage: ${error}`)
 }
 
 export default store;

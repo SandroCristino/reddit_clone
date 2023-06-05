@@ -4,7 +4,9 @@ import 'firebase/database'
 import { initializeApp } from "firebase/app"
 import { getStorage } from "firebase/storage";
 import { getFirestore, setDoc, doc, updateDoc, arrayUnion } from 'firebase/firestore';
-import { v4 as uuidv4, v4 } from 'uuid';
+import { setUser } from "./userReducer.js";
+import { useDispatch } from "react-redux";
+import { useEffect } from "react";
 
 import {
     GoogleAuthProvider,
@@ -23,6 +25,7 @@ import {
     where,
     addDoc,
 } from 'firebase/firestore'
+import { useState } from "react";
 
 
 const firebaseConfig = {
@@ -38,6 +41,8 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 const storage = getStorage(app);
+
+
 
 // Google authentication
 const googleProvider = new GoogleAuthProvider();
@@ -89,6 +94,14 @@ const signInWithGoogle = async () => {
 const logInWithEmailAndPassword = async (email, password) => {
     try {
       await signInWithEmailAndPassword(auth, email, password);
+      // console.log(result)
+      // console.log(`Auth in Firebase: ${auth}`)
+      // const userUid = auth.currentUser.uid;
+      // const currentUser = await getUserServerData(userUid);
+      // console.log(currentUser)
+      // debugger
+      // await dispatch(setUser(currentUser));
+
       return true
     } catch (err) {
       console.error(err);
@@ -107,12 +120,22 @@ const registerWithEmailAndPassword = async (name, email, password) => {
       name,
       authProvider: "local",
       email,
-      
     });
+
+    // Update user authentication state
+    const updatedUser = {
+      ...user,
+      isLoggedIn: true
+    };
+
+    await setUser(updatedUser)
+    return true
   } catch (err) {
     console.error(err);
-  }
+    return false 
+  } 
 };
+
 // // Email registration 
 // const registerWithEmailAndPassword = async (name, email, password) => {
 //   try {
@@ -177,7 +200,6 @@ async function getUserServerData(userUid) {
     alert("An error occurred while fetching user data");
   }
 }
-
 
 
 export {

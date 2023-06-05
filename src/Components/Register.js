@@ -1,35 +1,51 @@
-import { set } from "firebase/database";
-import React, { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { Link, useNavigate } from "react-router-dom";
+import React, { useEffect, useState } from "react"
+import { useAuthState } from "react-firebase-hooks/auth"
+import { getUserServerData } from '../Components/Firebase.js'
+import { Link, useNavigate } from "react-router-dom"
+import { useDispatch } from 'react-redux'
 import {
   auth,
   registerWithEmailAndPassword,
   signInWithGoogle,
 } from '../Components/Firebase.js'
+import { setUser } from "./userReducer.js"
 
 export default function Register() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
     const [passwordConf, setPasswordConf] = useState('')
-    const [name, setName] = useState("");
-    const [user, loading, error] = useAuthState(auth);
+    const [name, setName] = useState("")
+    const [user, loading, error] = useAuthState(auth)
     const [text, setText] = useState('')
-    const navigate = useNavigate();
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
 
-    const register = () => {
+    const register = async () => {
         const mailPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
         if (!name) setText('Enter name')
         if (!password) setText('Enter password')
         if (password !== passwordConf) setText('Password should be similar')
         if (!mailPattern.test(email)) setText('Invalid email')
         if (password.length < 6) setText('Password should be at least 6 character')
-        registerWithEmailAndPassword(name, email, password);
-    };
+        try {
+            await registerWithEmailAndPassword(name, email, password);
+            await handleUpdateLocalStorage()
+        } catch (error) {
+            console.error(error);
+            setText('An error occurred during registration. Please try again.');
+        }
+    }  
+
+    const handleUpdateLocalStorage = async () => {
+        const userUid = auth.currentUser.uid
+        const currentUser = await getUserServerData(userUid)
+        await dispatch(setUser(currentUser))
+    }
 
     useEffect(() => {
         if (loading) return;
-        if (user) navigate("/my_profile", { replace: true });
+        const storedData = JSON.parse(localStorage.getItem('user'))
+        if (storedData.isLoggedIn === true) navigate("/my_profile")
     }, [user, loading, navigate]);
 
     useEffect(() => {
@@ -55,7 +71,7 @@ export default function Register() {
                                 onChange={(e) => setName(e.target.value)} 
                                 required
                                 />
-                                <label class="form-label" for="typeEmailX-2">Name</label>
+                                <label class="form-label" htmlFor="typeEmailX-2">Name</label>
                             </div>
 
                             <div class="form-outline mb-4">
@@ -67,7 +83,7 @@ export default function Register() {
                                 onChange={(e) => setEmail(e.target.value)} 
                                 required
                                 />
-                                <label class="form-label" for="typePasswordX-2">Mail</label>
+                                <label class="form-label" htmlFor="typePasswordX-2">Mail</label>
                             </div> 
 
                             <div class="form-outline mb-4">
@@ -78,7 +94,7 @@ export default function Register() {
                                 value={password}
                                 onChange={(e) => setPassword(e.target.value)} 
                                 />
-                                <label class="form-label" for="typePasswordX-1">Password</label>
+                                <label class="form-label" htmlFor="typePasswordX-1">Password</label>
                             </div>
 
                             <div class="form-outline mb-4">
@@ -89,7 +105,7 @@ export default function Register() {
                                 value={passwordConf}
                                 onChange={(e) => setPasswordConf(e.target.value)} 
                                 />
-                                <label class="form-label" for="typePasswordX-2">Password Confirmation</label>
+                                <label class="form-label" htmlFor="typePasswordX-2">Password Confirmation</label>
                             </div>
 
                             <div class="form-outline mb-4 text-danger">
@@ -101,6 +117,7 @@ export default function Register() {
                             type="submit"
                             onClick={register}
                             >
+                                <i class="bi bi-door-open me-2"></i>
                                 Register
                             </button>
 
@@ -113,11 +130,12 @@ export default function Register() {
                             >
                                 <i class="fab fa-google me-2"></i>Register with google
                             </button>
-                            <Link 
+
+                            {/* <Link 
                                 to="/register"
                                 class="btn btn-lg btn-block btn-primary mb-2"
                                 type="submit"><i class="bi bi-door-open me-2"></i>Register
-                            </Link>
+                            </Link> */}
                             
                         </div>
                     </div>

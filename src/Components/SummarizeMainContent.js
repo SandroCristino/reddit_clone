@@ -7,7 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { auth, db, getUserServerData } from "../Components/Firebase.js";
 import { query, collection, getDocs, where  } from "firebase/firestore";
 import { useDispatch, useSelector } from 'react-redux';
-import { setUser, setShowCreateFeed } from './userReducer';
+import { setShowCreateFeed } from './userReducer';
 import Navbar from "./Navbar.js";
 import loadingSpinner from "../Assets/loading-spinner.gif";
 import '../Styles/SummarizeMainContent.css'
@@ -41,6 +41,17 @@ export default function SummarizeMainContent({isUserPage}) {
     const handleToggleCreateFeed = () => {
       dispatch(setShowCreateFeed(!showCreateFeed));
     };
+
+    // useEffect(() => {
+    //   if (user) {
+    //     const fetchUserData = async () => {
+    //       const currentUser = await getUserServerData(user.uid);
+    //       dispatch(setUser(currentUser));
+    //     };
+  
+    //     fetchUserData();
+    //   }
+    // }, [user, dispatch]);
   
     return (
     <div className='mt-5'>

@@ -17,9 +17,9 @@ export default function Navbar() {
     setIsOpen(!isOpen);
   };
 
-  const handleLogout = () => {
-    logout()
-    clearUser()
+  const handleLogout = async () => {
+    await logout()
+    await clearUser()
     localStorage.clear()
     window.location.reload() 
   }

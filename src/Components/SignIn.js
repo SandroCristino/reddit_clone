@@ -1,33 +1,56 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { auth, logInWithEmailAndPassword, signInWithGoogle } from '../Components/Firebase.js';
-import { useAuthState } from "react-firebase-hooks/auth";
+import { auth, logInWithEmailAndPassword, signInWithGoogle } from '../Components/Firebase.js'
+import { useAuthState } from "react-firebase-hooks/auth"
+import { getUserServerData } from '../Components/Firebase.js'
+import { useDispatch } from 'react-redux'
+import { setUser } from "./userReducer.js"
+import { GoogleAuthProvider } from 'firebase/auth'
+
 
 export default function SignIn() {
   const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [user, loading, error] = useAuthState(auth);
+  const [password, setPassword] = useState("")
+  const [user, loading, error] = useAuthState(auth)
   const [text, setText] = useState('')
-  const navigate = useNavigate();
+  const navigate = useNavigate()
+  const dispatch = useDispatch()
 
   useEffect(() => {
     if (loading) {
-      // maybe trigger a loading screen
       console.log('Loading login')
       return;
     }
-    if (user) navigate("/my_profile");
-  }, [user, loading]);
+    const storedData = JSON.parse(localStorage.getItem('user'))
+    if (storedData.isLoggedIn === true) navigate("/my_profile")
+  }, [user, loading, localStorage])
 
   const handleSignIn = async () => {
     const mailPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
     if (!password) setText('Enter password')
     if (!mailPattern.test(email)) setText('Invalid email')
-    const result = await logInWithEmailAndPassword(email, password);
+    const result = await logInWithEmailAndPassword(email, password)
+    await handleUpdateLocalStorage()
     if (!result) {
       setText('Password or email incorrect')
     }
+    window.location.reload()
   };
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await signInWithGoogle()
+      handleUpdateLocalStorage()
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleUpdateLocalStorage = async () => {
+    const userUid = auth.currentUser.uid
+    const currentUser = await getUserServerData(userUid)
+    await dispatch(setUser(currentUser))
+  }
   
   return (
     <div className="container py-5 h-100">
@@ -68,7 +91,7 @@ export default function SignIn() {
               <button 
               className="btn btn-primary btn-lg btn-block" 
               type="submit"
-              onClick={() =>  handleSignIn()}
+              onClick={handleSignIn}
               >
                 Login
               </button>
@@ -85,15 +108,16 @@ export default function SignIn() {
               <button 
               className="btn btn-lg btn-block btn-primary"
               type="submit"
-              onClick={signInWithGoogle}>
+              onClick={handleGoogleSignIn}>
                 <i className="fab fa-google me-2"></i> 
                 Sign in with google
               </button>
-                <Link 
-                  to="/register"
-                  className="btn btn-lg btn-block btn-primary mb-2"
-                  type="submit"><i className="bi bi-door-open me-2"></i>Register
-                </Link>
+
+              <Link 
+                to="/register"
+                className="btn btn-lg btn-block btn-primary mb-2"
+                type="submit"><i className="bi bi-door-open me-2"></i>Register
+              </Link>
             </div>
           </div>
         </div>
