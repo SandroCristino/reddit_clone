@@ -9,3 +9,18 @@
 li {
     min-width: max-content;
 }
+
+.searchbar-outer {
+    width: 100%;
+    position: absolute;
+    left: 11%;
+}
+
+.search-span {
+    position: absolute
+}
+
+.search-span:hover {
+    color: darkcyan;
+    transform: scale(1.1);
+}

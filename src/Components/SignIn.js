@@ -21,10 +21,7 @@ export default function SignIn() {
       return;
     }
     const storedData = JSON.parse(localStorage.getItem('user'))
-    if (storedData.isLoggedIn === true) {
-      navigate("/my_profile")
-      navigate(0)
-    }
+
   }, [user, loading, localStorage])
 
   const handleSignIn = async () => {

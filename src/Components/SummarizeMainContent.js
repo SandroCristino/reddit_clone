@@ -2,14 +2,12 @@ import React, {useState, useEffect} from 'react'
 import FeedList from './FeedList'
 import CreateFeed from './CreateFeed'
 import AddFeedButton from './AddFeedButton'
-import { useAuthState  } from "react-firebase-hooks/auth";
-import { useNavigate } from "react-router-dom";
-import { auth, db, getUserServerData } from "../Components/Firebase.js";
-import { query, collection, getDocs, where  } from "firebase/firestore";
-import { useDispatch, useSelector } from 'react-redux';
-import { setShowCreateFeed } from './userReducer';
-import Navbar from "./Navbar.js";
-import loadingSpinner from "../Assets/loading-spinner.gif";
+import { useAuthState  } from "react-firebase-hooks/auth"
+import { useNavigate } from "react-router-dom"
+import { auth, db, getUserServerData } from "../Components/Firebase.js"
+import { useDispatch, useSelector } from 'react-redux'
+import { setShowCreateFeed } from './userReducer'
+import loadingSpinner from "../Assets/loading-spinner.gif"
 import '../Styles/SummarizeMainContent.css'
 
 export default function SummarizeMainContent({isUserPage}) {
@@ -18,8 +16,8 @@ export default function SummarizeMainContent({isUserPage}) {
     const [showLoadingSpinner, setShowLoadingSpinner] = useState(false)
     const loadingFeets = useSelector((state) => state.user.loading)
     const showCreateFeed = useSelector((state) => state.user.showCreateFeed)
-    const navigate = useNavigate();
-    const dispatch = useDispatch();
+    const navigate = useNavigate()
+    const dispatch = useDispatch()
   
     // Keep loading while loading user data
     useEffect(() => {

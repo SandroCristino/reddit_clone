@@ -3,7 +3,7 @@ import { db, storage, getUserServerData } from './Firebase'
 import { collection, getDocs } from 'firebase/firestore'
 import { getDownloadURL, ref } from 'firebase/storage'
 import { useDispatch, useSelector } from 'react-redux'
-import { setLoading } from './userReducer'
+import { setLoading, setSearchInputSpan, setRunFilterFromSearchBar } from './userReducer'
 import Feed from './Feed'
 import '../Styles/FeedList.css'
 
@@ -16,6 +16,8 @@ export default function FeedList({isUserPage}) {
   const loadedObjects = useSelector((state) => state.user.loadedObjects)
   const currentUser = useSelector((state) => state.user.userData)
   const sorting = useSelector((state) => state.user.sorting)
+  const searchInput = useSelector((state) => state.user.searchInput)
+  const runFilterFromSearchBar = useSelector((state) => state.user.runFilterFromSearchBar)
   const dispatch = useDispatch()
  
   useEffect(() => {
@@ -31,16 +33,16 @@ export default function FeedList({isUserPage}) {
             ...doc.data(),
           };
 
-          // Fetch the download URL for the picture from Firebase Storage
+          // Fetch the download URvL for the picture from Firebase Storage
           const pictureRef = ref(storage, `images/${feed.id}`)
           const pictureURL = await getDownloadURL(pictureRef)
 
           // Check if user logged in
           if (currentUser !== null) {
-
             // Fetch user data
             var fetchedUserData = await getUserServerData(currentUser.uid)
             var userData = fetchedUserData.feedList
+          }
           
             // Add to feeds. Either user or general
             if (isUserPage) {
@@ -52,8 +54,6 @@ export default function FeedList({isUserPage}) {
               feed.pictureUrl = pictureURL;
               fetchedFeeds.push(feed);
             }
- 
-          }
         }
         setFeeds(fetchedFeeds);
         setOriginalFeeds(fetchedFeeds);
@@ -75,7 +75,12 @@ export default function FeedList({isUserPage}) {
 
   useEffect(() => {
     handleResorting()
-  },[sorting])
+    handleSearch()
+  },[sorting, searchInput])
+
+  useEffect(() => {
+    handleSearch()
+  },[runFilterFromSearchBar])
 
   const handleResorting = async () => {
     if (sorting === 'Popular') {
@@ -99,6 +104,30 @@ export default function FeedList({isUserPage}) {
       // Sort regarding topic
       const newFeeds = await originalFeeds.filter((feed) => feed.category === sorting);
       setFeeds(newFeeds)
+    }
+  }
+
+  const handleSearch = async () => {
+
+    if (searchInput === '') return
+
+    const newFeedsDescription = await originalFeeds.filter(feed => feed.description.includes(searchInput))
+    
+
+    if (newFeedsDescription[0]) {
+      // Update span description 
+      const newSpanDescription = await newFeedsDescription[0].description
+      await dispatch(setSearchInputSpan(`Feed: ${newSpanDescription}`))
+      // console.log(`Feed: ${newSpanDescription}`)
+    }  else {
+      dispatch(setSearchInputSpan(''))
+    }
+
+
+    if (runFilterFromSearchBar === true) {
+      await setFeeds(newFeedsDescription)
+      await dispatch(setRunFilterFromSearchBar(false))
+      dispatch(setSearchInputSpan(''))
     }
   }
 

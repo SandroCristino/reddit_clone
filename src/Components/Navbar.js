@@ -1,20 +1,24 @@
-import React, { useState} from 'react';
-import { Link, useNavigate } from 'react-router-dom';
-import '../Styles/Navbar.css';
-import { useSelector, useDispatch } from 'react-redux';
-import { clearUser, setLoading } from './userReducer';
-import { logout } from "../Components/Firebase.js";
+import React, { useState} from 'react'
+import { Link, useNavigate } from 'react-router-dom'
+import { setSearchInput, setSearchInputSpan } from './userReducer'
+import { useSelector, useDispatch } from 'react-redux'
+import { clearUser, setRunFilterFromSearchBar } from './userReducer'
+import { logout } from "../Components/Firebase.js"
+import '../Styles/Navbar.css'
 
 
 
 
 export default function Navbar() {
-  const [isOpen, setIsOpen] = useState(false);
-  const user = useSelector(state => state.user); // Retrieve the user state from Redux
+  const [searchbar, setSearchBar] = useState('')
+  const [isOpen, setIsOpen] = useState(false)
+  const user = useSelector(state => state.user) // Retrieve the user state from Redux
+  const searchInputSpan = useSelector(state => state.user.searchInputSpan) // Retrieve the user state from Redux
   const navigate = useNavigate(0)
+  const dispatch = useDispatch()
 
   const toggleNavbar = () => {
-    setIsOpen(!isOpen);
+    setIsOpen(!isOpen)
   };
 
   const handleLogout = async () => {
@@ -29,6 +33,21 @@ export default function Navbar() {
     navigate(0)
   }
 
+  const handleSearchBarUpload = (event) => {
+    setSearchBar(event.target.value)
+    dispatch(setSearchInput(event.target.value))
+  }
+
+  // Run new filter feedlist
+  const handleDisplaySearchSpan = async () => {
+    if (searchInputSpan !== '') {
+      setSearchBar('')
+      await dispatch(setRunFilterFromSearchBar(true))
+      await dispatch(setSearchInput(''))
+    }
+  }
+
+
   return (
     <nav className="navbar navbar-expand-lg bg-light fixed-top">
       <div className="navbar">
@@ -39,10 +58,18 @@ export default function Navbar() {
         </Link>
 
         <div className="searchbar input-group mx-auto">
-          <button className="btn btn-outline-secondary" type="button" id="button-addon1">
-            Search
-          </button>
-          <input type="text" className="form-control" />
+            <button className="btn btn-outline-secondary" type="button" id="button-addon1" onClick={handleDisplaySearchSpan}>
+              Search
+            </button>
+            <div className='searchbar-outer'>
+              <input type="text" className="form-control" onChange={(event) => handleSearchBarUpload(event)} value={searchbar}/>  
+              <div>
+                {searchInputSpan !== '' && (
+                  <p className="my-2 p-2 bg-light rounded search-span" onClick={handleDisplaySearchSpan}>{searchInputSpan}</p>
+                )}
+              </div>
+            </div>
+    
         </div>
 
         <button className="navbar-toggler mx-2" type="button" onClick={toggleNavbar}>

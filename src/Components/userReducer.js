@@ -8,6 +8,9 @@ const initialState = {
   loading: true,
   loadedObjects: 0,
   sorting: 'Any',
+  searchInput: '',
+  searchInputSpan: '',
+  runFilterFromSearchBar: false,
 };
 
 const userSlice = createSlice({
@@ -36,6 +39,15 @@ const userSlice = createSlice({
     setSorting: (state, action) => {
       state.sorting = action.payload
     },
+    setSearchInput: (state, action) => {
+      state.searchInput = action.payload
+    }, 
+    setSearchInputSpan: (state, action) => {
+      state.searchInputSpan = action.payload
+    }, 
+    setRunFilterFromSearchBar: (state, action) => {
+      state.runFilterFromSearchBar = action.payload
+    }
   },
 });
 
@@ -48,6 +60,9 @@ export const {
   setLoading, 
   setLoadedObjects,
   setSorting, 
+  setSearchInput,
+  setSearchInputSpan,
+  setRunFilterFromSearchBar,
 } = userSlice.actions;
 
 export default userSlice.reducer
