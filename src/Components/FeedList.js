@@ -23,6 +23,7 @@ export default function FeedList({isUserPage}) {
   useEffect(() => {
     const fetchFeeds = async () => {
       try {
+
         // Fetch data from database
         const querySnapshot = await getDocs(collection(db, 'feeds'))
         const fetchedFeeds = []
@@ -41,31 +42,31 @@ export default function FeedList({isUserPage}) {
           if (currentUser !== null) {
             // Fetch user data
             var fetchedUserData = await getUserServerData(currentUser.uid)
-            var userData = fetchedUserData.feedList
-          }
+            if (fetchedUserData.feedList) var userData = fetchedUserData.feedList
+          } 
           
             // Add to feeds. Either user or general
             if (isUserPage) {
               if (userData.findIndex(userFeed => userFeed === feed.id) >= 0) {
-                feed.pictureUrl = pictureURL;
-                fetchedFeeds.push(feed);          
+                feed.pictureUrl = pictureURL
+                fetchedFeeds.push(feed)      
               }
             } else {
-              feed.pictureUrl = pictureURL;
-              fetchedFeeds.push(feed);
+              feed.pictureUrl = pictureURL
+              fetchedFeeds.push(feed)
             }
         }
-        setFeeds(fetchedFeeds);
-        setOriginalFeeds(fetchedFeeds);
+        setFeeds(fetchedFeeds)
+        setOriginalFeeds(fetchedFeeds)
       } catch (error) {
-        console.log(error);
+        console.log(error)
       } finally {
         setFetchFeedsLoading(false)
       }
     };
 
-    fetchFeeds();
-  }, []);
+    fetchFeeds()
+  }, [])
 
   useEffect(() => {
     console.log(`Feeds lenght ${feeds.length}`)
@@ -89,9 +90,9 @@ export default function FeedList({isUserPage}) {
       const newFeeds = [...originalFeeds] 
       
       newFeeds.sort((a, b) => {
-        console.log('Feed A likes:', a.likes.length);
-        console.log('Feed B likes:', b.likes.length);
-        return b.likes.length - a.likes.length;
+        console.log('Feed A likes:', a.likes.length)
+        console.log('Feed B likes:', b.likes.length)
+        return b.likes.length - a.likes.length
       });
       
       setFeeds(newFeeds)
@@ -108,12 +109,10 @@ export default function FeedList({isUserPage}) {
   }
 
   const handleSearch = async () => {
-
     if (searchInput === '') return
 
     const newFeedsDescription = await originalFeeds.filter(feed => feed.description.includes(searchInput))
     
-
     if (newFeedsDescription[0]) {
       // Update span description 
       const newSpanDescription = await newFeedsDescription[0].description
@@ -127,7 +126,7 @@ export default function FeedList({isUserPage}) {
     if (runFilterFromSearchBar === true) {
       await setFeeds(newFeedsDescription)
       await dispatch(setRunFilterFromSearchBar(false))
-      dispatch(setSearchInputSpan(''))
+      // dispatch(setSearchInputSpan(''))
     }
   }
 

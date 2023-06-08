@@ -37,11 +37,11 @@ export default function SummarizeMainContent({isUserPage}) {
       if (!loadingFeets) {
         setShowLoadingSpinner(false)
       }
-    }, [loading, loadingFeets, showLoadingSpinner]);
+    }, [loading, loadingFeets, showLoadingSpinner])
   
     // Handle createFeed button
     const handleToggleCreateFeed = () => {
-      dispatch(setShowCreateFeed(!showCreateFeed));
+      dispatch(setShowCreateFeed(!showCreateFeed))
     };
   
     return (

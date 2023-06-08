@@ -1,6 +1,6 @@
 import React from 'react'
 import '../Styles/AddFeedButton.css'
-import { useSelector } from 'react-redux';
+import { useSelector } from 'react-redux'
 
 
 export default function AddFeedButton() {

@@ -1,23 +1,22 @@
-import React, { useEffect, useState } from "react";
-import { useAuthState } from "react-firebase-hooks/auth";
-import { useNavigate } from "react-router-dom";
-import { Link } from "react-router-dom";
-import { auth, sendPasswordReset } from "../Components/Firebase.js";
+import React, { useEffect, useState } from "react"
+import { useAuthState } from "react-firebase-hooks/auth"
+import { useNavigate } from "react-router-dom"
+import { auth, sendPasswordReset } from "../Components/Firebase.js"
 
 export default function Reset() {
-    const [email, setEmail] = useState("");
-    const [user, loading, error] = useAuthState(auth);
-    const navigate = useNavigate();
+    const [email, setEmail] = useState("")
+    const [user, loading] = useAuthState(auth)
+    const navigate = useNavigate()
 
     useEffect(() => {
-        if (loading) return;
-        if (user) navigate("/sign_in");
-    }, [user, loading]);
+        if (loading) return
+        if (user) navigate("/sign_in")
+    }, [user, loading])
     
     const handleResetPassword = async () => {
-        const result = await sendPasswordReset(email);
+        const result = await sendPasswordReset(email)
         if (result) {
-          navigate('/sign_in');
+          navigate('/sign_in')
         }
     };
 

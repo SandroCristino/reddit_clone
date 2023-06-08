@@ -27,12 +27,14 @@ export default function Register() {
         if (password !== passwordConf) setText('Password should be similar')
         if (!mailPattern.test(email)) setText('Invalid email')
         if (password.length < 6) setText('Password should be at least 6 character')
-        try {
-            await registerWithEmailAndPassword(name, email, password);
-            await handleUpdateLocalStorage()
-        } catch (error) {
-            console.error(error);
-            setText('An error occurred during registration. Please try again.');
+        if (text === '') {
+            try {
+                await registerWithEmailAndPassword(name, email, password)
+                await handleUpdateLocalStorage()
+            } catch (error) {
+                console.error(error)
+    
+            }
         }
     }  
 
@@ -44,16 +46,21 @@ export default function Register() {
 
     useEffect(() => {
         if (loading) return;
-        const storedData = JSON.parse(localStorage.getItem('user'))
-        if (storedData.isLoggedIn === true) {
-            navigate("/my_profile")
-            navigate(0)
-        }
+        handleNavigate()
         }, [user, loading, navigate])
 
     useEffect(() => {
         setText('')
     }, [name, password, passwordConf, email])
+
+    const handleNavigate = async () => {
+        const storedData = await JSON.parse(localStorage.getItem('user'))
+        if (storedData === null) return 
+        if (storedData.isLoggedIn === true) {
+            navigate("/my_profile")
+            navigate(0)
+        }
+    }
       
 
     return (

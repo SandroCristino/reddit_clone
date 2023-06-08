@@ -1,9 +1,9 @@
-import React from 'react';
-import { useDispatch } from 'react-redux';
-import { setSorting } from './userReducer';
+import React from 'react'
+import { useDispatch } from 'react-redux'
+import { setSorting } from './userReducer'
 
-import '@fortawesome/fontawesome-free/css/all.min.css';
-import '../Styles/Sidebar.css';
+import '@fortawesome/fontawesome-free/css/all.min.css'
+import '../Styles/Sidebar.css'
 
 const Sidebar = () => {
     const dispatch = useDispatch()

@@ -1,6 +1,6 @@
 import React, { useState} from 'react'
 import { Link, useNavigate } from 'react-router-dom'
-import { setSearchInput, setSearchInputSpan } from './userReducer'
+import { setSearchInput } from './userReducer'
 import { useSelector, useDispatch } from 'react-redux'
 import { clearUser, setRunFilterFromSearchBar } from './userReducer'
 import { logout } from "../Components/Firebase.js"
@@ -12,6 +12,7 @@ import '../Styles/Navbar.css'
 export default function Navbar() {
   const [searchbar, setSearchBar] = useState('')
   const [isOpen, setIsOpen] = useState(false)
+  const [profileIsOpen, setProfileIsOpen] = useState(false)
   const user = useSelector(state => state.user) // Retrieve the user state from Redux
   const searchInputSpan = useSelector(state => state.user.searchInputSpan) // Retrieve the user state from Redux
   const navigate = useNavigate(0)
@@ -43,10 +44,9 @@ export default function Navbar() {
     if (searchInputSpan !== '') {
       setSearchBar('')
       await dispatch(setRunFilterFromSearchBar(true))
-      await dispatch(setSearchInput(''))
+      // await dispatch(setSearchInput(''))
     }
   }
-
 
   return (
     <nav className="navbar navbar-expand-lg bg-light fixed-top">
@@ -54,7 +54,7 @@ export default function Navbar() {
 
         <Link className="navbar-brand mx-3" onClick={() => handlePageChange('/')}>
           <i class="bi bi-reddit mx-2"></i>  
-          Wezzy
+          Caution: Reddit Clone 
         </Link>
 
         <div className="searchbar input-group mx-auto">
@@ -64,7 +64,7 @@ export default function Navbar() {
             <div className='searchbar-outer'>
               <input type="text" className="form-control" onChange={(event) => handleSearchBarUpload(event)} value={searchbar}/>  
               <div>
-                {searchInputSpan !== '' && (
+                {searchbar !== '' && (
                   <p className="my-2 p-2 bg-light rounded search-span" onClick={handleDisplaySearchSpan}>{searchInputSpan}</p>
                 )}
               </div>
@@ -88,9 +88,25 @@ export default function Navbar() {
             {user.isLoggedIn ? (
             <>
               <li className="nav-item mx-2">
-                <Link className="nav-link btn border" onClick={() => handlePageChange('/my_profile')}>
+
+
+
+                <button 
+                className="nav-link btn border" 
+                onMouseEnter={() => {setProfileIsOpen(true)}} 
+                onMouseLeave={() => {setProfileIsOpen(false)}}
+                >
+      
                   Hey, {user.name}
-                </Link>
+                  { profileIsOpen && 
+                    <div className='mt-2 bg-light rounded px-3 py-1 profile-span '>
+                        <li className='nav-item profile-span-item' onClick={() => {navigate('/my_profile'); navigate(0)}}>Profile</li>
+                        <li className='nav-item profile-span-item' onClick={() => {navigate('/settings')}}>Settings</li>
+                    </div>
+                  }
+                </button>
+
+          
               </li>
           
               <li className="nav-item mx-2">
@@ -106,8 +122,6 @@ export default function Navbar() {
                 </Link>
               </li>
             )}
-       
-         
           </ul>
         </div>
       </div>

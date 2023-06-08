@@ -17,10 +17,19 @@ li {
 }
 
 .search-span {
-    position: absolute
+    position: absolute 
 }
 
 .search-span:hover {
     color: darkcyan;
     transform: scale(1.1);
 }
+
+.profile-span {
+    position: absolute;
+}
+
+.profile-span-item:hover {
+    transform: scale(1.1); 
+    cursor: pointer;
+} 

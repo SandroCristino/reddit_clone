@@ -1,15 +1,15 @@
-import { updateDoc, doc, getDocs, getDoc, collection } from 'firebase/firestore';
-import { db , updateServerData, updateReplaceServerData } from './Firebase';
+import { updateDoc, doc, getDocs, getDoc, collection } from 'firebase/firestore'
+import { db , updateServerData, updateReplaceServerData } from './Firebase'
 import React, { useState, useEffect } from 'react'
-import { useDispatch, useSelector } from 'react-redux';
-import { setLoading, setLoadedObjects } from './userReducer';
+import { useDispatch, useSelector } from 'react-redux'
+import { setLoading, setLoadedObjects } from './userReducer'
 
-import { v4 as uuidv4 } from 'uuid';
-import '../Styles/Feed.css';
+import { v4 as uuidv4 } from 'uuid'
+import '../Styles/Feed.css'
 
 
 export default function Feed({ picture, description, category, feedId, feedCommentList, feedLikes }) {
-    const currentUser = useSelector((state) => state.user.userData);
+    const currentUser = useSelector((state) => state.user.userData)
     const loadedObjects = useSelector((state) => state.user.loadedObjects)
     const [likes, setLikes] = useState(feedLikes)
     const [commentList, setCommentList] = useState(feedCommentList)
@@ -17,13 +17,14 @@ export default function Feed({ picture, description, category, feedId, feedComme
     const [recentComments, setRecentComments] = useState([])
     const [showAllComments, setShowAllComments] = useState(false)
     const [textBox, setTextBox] = useState('Show More')
-    const dispatch = useDispatch();
+    const dispatch = useDispatch()
 
     useEffect(() => {
         setRecentComments(commentList.slice(-2))
     },[commentList])
 
     useEffect(() => {
+        
         // Update commentlist 
         if (commentList.length > 0 || newComment !== '') {
             updateReplaceServerData('feeds', feedId, 'commentList', commentList)
@@ -31,32 +32,31 @@ export default function Feed({ picture, description, category, feedId, feedComme
 
         // Update likes
         getLikesFromDB()
-      }, [commentList, newComment, likes]);
+      }, [commentList, newComment, likes])
 
 
     async function getLikesFromDB() {
         try {
-          const docRef = doc(db, 'feeds', feedId);
-          const docSnapshot = await getDoc(docRef);
-          
+          const docRef = await doc(db, 'feeds', feedId)
+          const docSnapshot = await getDoc(docRef)
           if (docSnapshot.exists()) {
-            const feedData = docSnapshot.data();
-            const likesArray = feedData.likes;
+            const feedData = docSnapshot.data()
+            const likesArray = feedData.likes
             setLikes(likesArray)
           } else {
-            console.log('Feed document does not exist.');
+            console.log('Feed document does not exist.')
           }
         } catch (error) {
-          console.log(error);
+          console.log(error)
         }
     }
 
     function addComment() {
-        let currentDate = new Date();
-        const day = currentDate.getDate();
-        const month = currentDate.toLocaleString('default', { month: 'long' });
-        const year = currentDate.getFullYear();
-        const time = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+        let currentDate = new Date()
+        const day = currentDate.getDate()
+        const month = currentDate.toLocaleString('default', { month: 'long' })
+        const year = currentDate.getFullYear()
+        const time = currentDate.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })
         
         currentDate = `${day} ${month} ${year} ${time}`
 
@@ -69,8 +69,8 @@ export default function Feed({ picture, description, category, feedId, feedComme
             date: currentDate,
           };
     
-          setCommentList([...commentList, comment]);
-          setNewComment('');
+          setCommentList([...commentList, comment])
+          setNewComment('')
         }
 
         updateServerData('users', currentUser.uid, 'commentList', feedId)

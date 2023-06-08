@@ -2,8 +2,8 @@ import "firebase/auth"
 import "firebase/firestore"
 import 'firebase/database'
 import { initializeApp } from "firebase/app"
-import { getStorage } from "firebase/storage";
-import { getFirestore, setDoc, doc, updateDoc, arrayUnion } from 'firebase/firestore';
+import { connectStorageEmulator, getStorage } from "firebase/storage";
+import { getFirestore, setDoc, doc, updateDoc, arrayUnion, getDoc } from 'firebase/firestore';
 import { setUser } from "./userReducer.js";
 import { useDispatch } from "react-redux";
 import { useEffect } from "react";
@@ -16,6 +16,7 @@ import {
     createUserWithEmailAndPassword,
     sendPasswordResetEmail,
     signOut,
+    updatePassword,
 } from 'firebase/auth'
 
 import {
@@ -37,21 +38,21 @@ const firebaseConfig = {
     appId: "1:1073508298977:web:ce80f745e6bb271b10c7a0"
 };
 
-const app = initializeApp(firebaseConfig);
-const auth = getAuth(app);
-const db = getFirestore(app);
-const storage = getStorage(app);
+const app = initializeApp(firebaseConfig)
+const auth = getAuth(app)
+const db = getFirestore(app)
+const storage = getStorage(app)
 
 
 
 // Google authentication
-const googleProvider = new GoogleAuthProvider();
+const googleProvider = new GoogleAuthProvider()
 const signInWithGoogle = async () => {
   try {
-    const res = await signInWithPopup(auth, googleProvider);
-    const user = res.user;
-    const q = query(collection(db, "users"), where("uid", "==", user.uid));
-    const docs = await getDocs(q);
+    const res = await signInWithPopup(auth, googleProvider)
+    const user = res.user
+    const q = query(collection(db, "users"), where("uid", "==", user.uid))
+    const docs = await getDocs(q)
     if (docs.docs.length === 0) {
       await addDoc(collection(db, "users"), {
         uid: user.uid,
@@ -61,8 +62,7 @@ const signInWithGoogle = async () => {
       });
     }
   } catch (err) {
-    console.error(err);
-    alert(err.message);
+    console.error(err)
   }
 };
 
@@ -96,7 +96,7 @@ const logInWithEmailAndPassword = async (email, password) => {
       await signInWithEmailAndPassword(auth, email, password);
       return true
     } catch (err) {
-      console.error(err);
+      console.error(err)
       return false
     }
 };
@@ -104,15 +104,21 @@ const logInWithEmailAndPassword = async (email, password) => {
 // Email registration 
 const registerWithEmailAndPassword = async (name, email, password) => {
   try {
-    const res = await createUserWithEmailAndPassword(auth, email, password);
-    const user = res.user;
+    const res = await createUserWithEmailAndPassword(auth, email, password)
+    const user = res.user
+    console.log(user.uid)
 
-    await setDoc(doc(db, `users/${user.uid}`), {
-      uid: user.uid,
-      name,
-      authProvider: "local",
-      email,
-    });
+    try {
+      await setDoc(doc(db, `users/${user.uid}`), {
+        uid: user.uid,
+        name,
+        authProvider: "local",
+        email,
+      });
+    } catch (e) {
+      console.log(e)
+    }
+   
 
     // Update user authentication state
     const updatedUser = {
@@ -136,7 +142,6 @@ const sendPasswordReset = async (email) => {
       return true
     } catch (err) {
       console.error(err)
-      alert(err.message)
     }
 };
 
@@ -170,14 +175,26 @@ async function updateReplaceServerData(fileSource, fileId, attribute, value) {
 // Get user data 
 async function getUserServerData(userUid) {
   try {
-    const q = query(collection(db, 'users'), where("uid", "==", userUid));
-    const doc = await getDocs(q);
-    const data = doc.docs[0].data();
-    return data;
+    const q = query(collection(db, 'users'), where("uid", "==", userUid))
+    const doc = await getDocs(q)
+    if (!doc.docs[0]) return
+    const data = doc.docs[0].data()
+    return data
   } catch (err) {
-    console.error(err);
-    alert("An error occurred while fetching user data");
+    console.error(err)
   }
+}
+
+// Update user password
+const changePassword = async (newPassword) => {
+  const user = await auth.currentUser;
+  updatePassword(user, newPassword).then(() => {
+    // Update successful.
+    return true
+  }).catch((error) => {
+    return error
+  })
+
 }
 
 
@@ -193,4 +210,5 @@ export {
     updateServerData,
     updateReplaceServerData,
     getUserServerData,
+    changePassword
 };

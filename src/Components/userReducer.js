@@ -47,6 +47,9 @@ const userSlice = createSlice({
     }, 
     setRunFilterFromSearchBar: (state, action) => {
       state.runFilterFromSearchBar = action.payload
+    }, 
+    setUserName: (state, action) => {
+      state.name = action.payload
     }
   },
 });
@@ -63,6 +66,7 @@ export const {
   setSearchInput,
   setSearchInputSpan,
   setRunFilterFromSearchBar,
+  setUserName,
 } = userSlice.actions;
 
 export default userSlice.reducer

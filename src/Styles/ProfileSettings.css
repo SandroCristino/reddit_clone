@@ -1,0 +1,9 @@
+.settings-outer {
+    height: 100vh;
+}
+
+.settings-inner-container {
+    width: 50%;
+    height: 50%;
+    background-color: lightgoldenrodyellow
+}

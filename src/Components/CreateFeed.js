@@ -30,8 +30,6 @@ export default function CreateFeed() {
         dispatch(setShowCreateFeed(!showCreateFeed));
     };
 
-    
-
     async function handleUploadData() {
         if (!picture) return
 
@@ -64,11 +62,10 @@ export default function CreateFeed() {
                 likes,
                 commentList,
             })
-
+        
             // Assign to owner 
-            updateServerData('users',currentUser.uid, 'feedList', feedId)
+            await updateServerData('users',currentUser.uid, 'feedList', feedId)
        
-
             // Reset
             setPicture('')
             setDescription('')

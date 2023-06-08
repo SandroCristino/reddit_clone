@@ -8,7 +8,7 @@ import { setUser } from "./userReducer.js"
 
 
 export default function SignIn() {
-  const [email, setEmail] = useState("");
+  const [email, setEmail] = useState("")
   const [password, setPassword] = useState("")
   const [user, loading] = useAuthState(auth)
   const [text, setText] = useState('')
@@ -28,12 +28,13 @@ export default function SignIn() {
     const mailPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
     if (!password) setText('Enter password')
     if (!mailPattern.test(email)) setText('Invalid email')
-    const result = await logInWithEmailAndPassword(email, password)
-    await handleUpdateLocalStorage()
-    if (!result) {
+    try {
+      await logInWithEmailAndPassword(email, password)
+      await handleUpdateLocalStorage()
+    } catch (error) {
       setText('Password or email incorrect')
+      console.log(error)
     }
-    window.location.reload()
   };
 
   const handleGoogleSignIn = async () => {
@@ -46,9 +47,14 @@ export default function SignIn() {
   }
 
   const handleUpdateLocalStorage = async () => {
-    const userUid = auth.currentUser.uid
-    const currentUser = await getUserServerData(userUid)
-    await dispatch(setUser(currentUser))
+    try {
+      const userUid = auth.currentUser.uid
+      const currentUser = await getUserServerData(userUid)
+      await dispatch(setUser(currentUser))
+    } catch (error) {
+      setText('Invalid user or password')
+    }
+   
   }
   
   return (
