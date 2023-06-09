@@ -1,5 +1,5 @@
 .navbar {
-    width: 100%
+    width: 100%;
 }
 
 .searchbar {
@@ -13,7 +13,6 @@ li {
 .searchbar-outer {
     width: 100%;
     position: absolute;
-    left: 11%;
 }
 
 .search-span {
@@ -27,9 +26,31 @@ li {
 
 .profile-span {
     position: absolute;
+    z-index: 20;
 }
 
 .profile-span-item:hover {
     transform: scale(1.1); 
     cursor: pointer;
 } 
+
+@media screen and (max-width: 1260px) {
+    .searchbar {
+       width: 600px;
+       margin-bottom: 10px;
+    }
+
+    .searchbar-outer {
+        width: 90%;
+    }
+
+    .right-navbar {
+        margin-left: 20px;
+    }
+
+    .navbar-toggler {
+        position: absolute;
+        top: 1px;
+        right: 1px;
+    }
+}

@@ -152,7 +152,7 @@ export default function Feed({ picture, description, category, feedId, feedComme
             </div>
 
             {/* Write own comment */}
-            <div className="searchbar input-group mx-auto mt-2">
+            <div className="input-group mx-auto mt-2">
                 <input 
                 type="text" 
                 className="form-control" 

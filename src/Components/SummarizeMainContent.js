@@ -4,7 +4,7 @@ import CreateFeed from './CreateFeed'
 import AddFeedButton from './AddFeedButton'
 import { useAuthState  } from "react-firebase-hooks/auth"
 import { useNavigate } from "react-router-dom"
-import { auth, db, getUserServerData } from "../Components/Firebase.js"
+import { auth } from "../Components/Firebase.js"
 import { useDispatch, useSelector } from 'react-redux'
 import { setShowCreateFeed } from './userReducer'
 import loadingSpinner from "../Assets/loading-spinner.gif"
@@ -42,15 +42,11 @@ export default function SummarizeMainContent({isUserPage}) {
     // Handle createFeed button
     const handleToggleCreateFeed = () => {
       dispatch(setShowCreateFeed(!showCreateFeed))
-    };
-
-    // const handleUpdateLoading = async () => {
-    //   const loadingFeets = await useSelector((state) => state.user.loading)
-
-    // }
+    }
   
+    
     return (
-    <div className='mt-5'>
+    <div className='summarize-outer'>
 
      {/* Loading */}
      {showLoadingSpinner && (
@@ -69,8 +65,8 @@ export default function SummarizeMainContent({isUserPage}) {
       </div>
   
       {/* Headline */}
-      <div className="d-flex justify-content-center mt-3">
-        <h1 className="text-center p-1 mt-3 bg-light bg-gradient rounded shadow main-content-headline">Your Feeds</h1>
+      <div className="d-flex justify-content-center">
+        <h1 className="text-center p-1 bg-light bg-gradient rounded shadow main-content-headline">Your Feeds</h1>
       </div>
   
       {   showCreateFeed && <CreateFeed />}

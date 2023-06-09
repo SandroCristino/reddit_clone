@@ -10,3 +10,8 @@
     width: 624px;
 }
 
+@media screen and (max-width: 750px) {
+    .feedlist-container {
+        width: 300px;
+    }
+}

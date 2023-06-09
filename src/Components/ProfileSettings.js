@@ -1,25 +1,17 @@
-import React, {useState, useEffect} from 'react'
+import React, {useState} from 'react'
 import Navbar from './Navbar'
 import { useSelector, useDispatch } from 'react-redux'
-import { updateReplaceServerData, getUserPassword, getUserServerData, changePassword } from './Firebase'
-import { useAuthState, EmailAuthProvider, reauthenticateWithCredential, reauthenticate } from "react-firebase-hooks/auth"
+import { updateReplaceServerData, changePassword } from './Firebase'
 import { setUserName } from './userReducer'
 import '../Styles/ProfileSettings.css'
-import {
-  auth,
-  registerWithEmailAndPassword,
-  signInWithGoogle,
-} from '../Components/Firebase.js'
 
 export default function ProfileSettings() {
   const offlineUser = useSelector(state => state.user) 
   const [updateUserName, setUpdateUserName] = useState(false)
   const [updatePasswordState, setUpdatePasswordState] = useState(false) 
   const [newName, setNewName] = useState(offlineUser.name)
-  const [fetchedPassword, setFetchedPassword] = useState('')
   const [newPassword, setNewPassword] = useState('')
   const [message, setMessage] = useState('')
-  const [user, loading, error] = useAuthState(auth)
   const dispatch = useDispatch()
 
   const handleUpdateUsername = async () => {    

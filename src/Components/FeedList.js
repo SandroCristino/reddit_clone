@@ -138,33 +138,33 @@ export default function FeedList({isUserPage}) {
 
   return (
     <div className="d-flex justify-content-center mt-4">
-    <div className="d-flex flex-column justify-content-center">
-      {feeds.length === 0 
-      ? (
-        <div className="d-flex justify-content-center">
-          <h3 className="text-center p-1 mt-3 w-100 bg-light bg-gradient rounded shadow">No feeds so far</h3>
-        </div>
-      ) : (
-            feeds.slice(0, displayCount).map((feed) => (
-              <div key={feed.id} className='feedlist-container mb-4 shadow'>
-                  <Feed 
-                  picture={feed.pictureUrl} 
-                  description={feed.description} 
-                  category={feed.category} 
-                  feedId={feed.id}
-                  feedCommentList={feed.commentList}
-                  feedLikes={feed.likes}
-                  />
-              </div>
-            ))
-          )
-      }
+      <div className="d-flex flex-column justify-content-center">
+        {feeds.length === 0 
+        ? (
+          <div className="d-flex justify-content-center">
+            <h3 className="text-center p-1 mt-3 w-100 bg-light bg-gradient rounded shadow">No feeds so far</h3>
+          </div>
+        ) : (
+              feeds.slice(0, displayCount).map((feed) => (
+                <div key={feed.id} className='feedlist-container mb-4 shadow'>
+                    <Feed
+                    picture={feed.pictureUrl} 
+                    description={feed.description} 
+                    category={feed.category} 
+                    feedId={feed.id}
+                    feedCommentList={feed.commentList}
+                    feedLikes={feed.likes}
+                    />
+                </div>
+              ))
+            )
+        }
 
-      {feeds.length > 0 && feeds.length > loadedObjects
-      ? <button onClick={handleLoadMore} className='btn btn-light mb-5'>More Feeds</button>
-      : ''
-      }
-    </div>
+        {feeds.length > 0 && feeds.length > loadedObjects
+        ? <button onClick={handleLoadMore} className='btn btn-light mb-5'>More Feeds</button>
+        : ''
+        }
+      </div>
     
   </div>
   );

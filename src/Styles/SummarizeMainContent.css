@@ -1,5 +1,5 @@
 .loading-overlay {
-    position: fixed;
+    position: absolute;
     top: 70px;
     left: 200px;
     width: 90%;
@@ -8,9 +8,13 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 9999; /* Adjust the z-index to make sure it appears above other elements */
+    z-index: 10; /* Adjust the z-index to make sure it appears above other elements */
 }
   
+.summarize-outer {
+    margin-top: 50px;
+}
+
 .loading-spinner {
     width: 100px;
     height: 100px;
@@ -18,12 +22,35 @@
 
 .main-content-headline {
     width: 624px;
+    margin-top: 30px;
 }
 
 .feed-button {
-    padding-top: 30px;
-    margin-right: 15px;
-    margin-top: 15px;
-    margin-bottom: -30px;
+    position: absolute;
+    right: 20px;
+    top:  100px;
+}
+
+@media screen and (max-width: 1260px) {
+
+    .summarize-outer {
+        margin-top: 70px;
+    }
+
+    .loading-overlay {
+        left: 0px;
+        width: 100%;
+    }
+
+    .feed-button {
+        top: 130px;
+    }
+
+}
+
+@media screen and (max-width: 1100px) {
+    .summarize-outer {
+        margin-top: 100px;
+    }
 }
 

@@ -1,10 +1,11 @@
-import React, { useState} from 'react'
+import React, { useState, useEffect } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
 import { setSearchInput } from './userReducer'
 import { useSelector, useDispatch } from 'react-redux'
 import { clearUser, setRunFilterFromSearchBar } from './userReducer'
 import { logout } from "../Components/Firebase.js"
 import '../Styles/Navbar.css'
+import Sidebar from './Sidebar'
 
 
 
@@ -57,7 +58,7 @@ export default function Navbar() {
           Caution: Reddit Clone 
         </Link>
 
-        <div className="searchbar input-group mx-auto">
+        <div className="searchbar input-group mx-3">
             <button className="btn btn-outline-secondary" type="button" id="button-addon1" onClick={handleDisplaySearchSpan}>
               Search
             </button>
@@ -72,9 +73,10 @@ export default function Navbar() {
     
         </div>
 
-        <button className="navbar-toggler mx-2" type="button" onClick={toggleNavbar}>
+        <button className="navbar-toggler mx-3" type="button" onClick={toggleNavbar}>
           <span className="navbar-toggler-icon"></span>
         </button>
+
       </div>
 
       <div className={`right-navbar d-flex ${ isOpen ? 'w-100 justify-content-end' : '' }`}>
@@ -87,9 +89,7 @@ export default function Navbar() {
           <ul className="navbar-nav w-100">
             {user.isLoggedIn ? (
             <>
-              <li className="nav-item mx-2">
-
-
+              <li className="nav-item mx-3">
 
                 <button 
                 className="nav-link btn border" 
@@ -125,6 +125,10 @@ export default function Navbar() {
           </ul>
         </div>
       </div>
+
+      {isOpen && (
+        <Sidebar />
+      )}
     </nav>
   );
 }
