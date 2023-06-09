@@ -22,10 +22,6 @@ export default function ProfileSettings() {
   const [user, loading, error] = useAuthState(auth)
   const dispatch = useDispatch()
 
-  useEffect(() => {
-    setMessage('')
-  },[newName, newPassword, updateUserName])
-
   const handleUpdateUsername = async () => {    
     await setUpdateUserName(!updateUserName)
     if (updateUserName && newName !== offlineUser.name) {
@@ -39,7 +35,6 @@ export default function ProfileSettings() {
   
     if (updatePasswordState) {
       const result = await changePassword(newPassword)
-      debugger
       console.log(result)
       if (result) {
         setMessage('Password successfully changed')
@@ -57,7 +52,7 @@ export default function ProfileSettings() {
 
 
   return (
-    <div className='settings-outer'>
+    <div className='settings-outer' onClick={() => {setMessage('')}}>
       <Navbar/>
       <div className='d-flex justify-content-center align-items-center w-100 h-100'>
         <div className='d-flex flex-column justify-content-center align-items-center rounded settings-inner-container'>
@@ -84,7 +79,9 @@ export default function ProfileSettings() {
 
             <button className='btn btn-info' onClick={handleUpdateUsername}>Change Name</button>
             <button className='mx-3 btn btn-info' onClick={handleUpdatePassword}>Change Password</button>
-            <div>{message}</div>
+            <div class="form-outline mb-4 text-danger profile-message">
+              <p>{message}</p>
+            </div>
           </div>
         </div>
       </div>

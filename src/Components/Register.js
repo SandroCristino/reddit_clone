@@ -20,6 +20,11 @@ export default function Register() {
     const navigate = useNavigate()
     const dispatch = useDispatch()
 
+    useEffect(() => {
+        if (loading) return
+        handleNavigate()
+    }, [user, loading, navigate])
+
     const register = async () => {
         const mailPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
         if (!name) setText('Enter name')
@@ -31,7 +36,6 @@ export default function Register() {
             try {
                 await registerWithEmailAndPassword(name, email, password)
                 await handleUpdateLocalStorage()
-                window.location.reload()
             } catch (error) {
                 console.error(error)
     
@@ -44,12 +48,6 @@ export default function Register() {
         const currentUser = await getUserServerData(userUid)
         await dispatch(setUser(currentUser))
     }
-
-    useEffect(() => {
-        if (loading) return;
-        handleNavigate()
-        }, [user, loading, navigate])
-
 
     const handleNavigate = async () => {
         const storedData = await JSON.parse(localStorage.getItem('user'))

@@ -22,19 +22,29 @@ export default function SignIn() {
     }
   }, [user, loading, localStorage])
 
-  // useEffect(() => {
-  //   setText('')
-  // }, [password,email])
+  useEffect(() => {
+    setText('')
+  }, [password,email])
 
+  const handleNavigate = async () => {
+    const storedData = await JSON.parse(localStorage.getItem('user'))
+    if (storedData === null) return 
+    if (storedData.isLoggedIn === true) {
+        navigate("/my_profile")
+        navigate(0)
+    }
+}
 
   const handleSignIn = async () => {
     const mailPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
     if (!password) setText('Enter password')
     if (!mailPattern.test(email)) setText('Invalid email')
+    if (password.length < 6) setText('Password should be at least 6 character')
+
     try {
-      const loginResult = await logInWithEmailAndPassword(email, password)
-      console.log(loginResult)
+      await logInWithEmailAndPassword(email, password)
       await handleUpdateLocalStorage()
+      handleNavigate()
     } catch (error) {
       setText('Password or email incorrect')
       console.log(error)

@@ -59,12 +59,12 @@ const signInWithGoogle = async () => {
         name: user.displayName,
         authProvider: "google",
         email: user.email,
-      });
+      })
     }
   } catch (err) {
     console.error(err)
   }
-};
+}
 
 // // Google authentication
 // const googleProvider = new GoogleAuthProvider();
@@ -98,15 +98,14 @@ const logInWithEmailAndPassword = async (email, password) => {
     } catch (err) {
       console.error(err)
       return false
-    }
-};
+    } 
+}
 
 // Email registration 
 const registerWithEmailAndPassword = async (name, email, password) => {
   try {
     const res = await createUserWithEmailAndPassword(auth, email, password)
     const user = res.user
-    console.log(user.uid)
 
     try {
       await setDoc(doc(db, `users/${user.uid}`), {
@@ -119,12 +118,11 @@ const registerWithEmailAndPassword = async (name, email, password) => {
       console.log(e)
     }
    
-
     // Update user authentication state
     const updatedUser = {
       ...user,
       isLoggedIn: true
-    };
+    }
 
     await setUser(updatedUser)
     return true
@@ -132,7 +130,7 @@ const registerWithEmailAndPassword = async (name, email, password) => {
     console.error(err);
     return false 
   } 
-};
+}
 
 // Email password reset
 const sendPasswordReset = async (email) => {
@@ -143,12 +141,12 @@ const sendPasswordReset = async (email) => {
     } catch (err) {
       console.error(err)
     }
-};
+}
 
 // Logout 
 const logout = () => {
     signOut(auth);
-};
+}
 
 // Update server data with specific parameter
 async function updateServerData(fileSource, fileId, attribute, value) {
@@ -187,14 +185,19 @@ async function getUserServerData(userUid) {
 
 // Update user password
 const changePassword = async (newPassword) => {
-  const user = await auth.currentUser;
-  updatePassword(user, newPassword).then(() => {
-    // Update successful.
+  try {
+    const user = await auth.currentUser;
+    updatePassword(user, newPassword)
     return true
-  }).catch((error) => {
+  } catch (error) {
     return error
-  })
-
+  }
+  // updatePassword(user, newPassword).then(() => {
+  //   // Update successful.
+  //   return true
+  // }).catch((error) => {
+  //   return error
+  // })
 }
 
 
@@ -211,4 +214,4 @@ export {
     updateReplaceServerData,
     getUserServerData,
     changePassword
-};
+}
