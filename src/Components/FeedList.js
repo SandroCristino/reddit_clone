@@ -71,8 +71,10 @@ export default function FeedList({isUserPage}) {
   useEffect(() => {
     console.log(`Feeds lenght ${feeds.length}`)
     console.log(`Loaded objects ${loadedObjects}`)
+    console.log(`Display count ${displayCount}`)
+    
     if ((loadedObjects === displayCount || feeds.length === loadedObjects) && !fetchFeedsLoading) dispatch(setLoading(false))
-  },[loadedObjects, feeds, loadingFeets])
+  },[loadedObjects, feeds, loadingFeets, fetchFeedsLoading])
 
   useEffect(() => {
     handleResorting()

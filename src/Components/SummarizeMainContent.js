@@ -43,6 +43,11 @@ export default function SummarizeMainContent({isUserPage}) {
     const handleToggleCreateFeed = () => {
       dispatch(setShowCreateFeed(!showCreateFeed))
     };
+
+    // const handleUpdateLoading = async () => {
+    //   const loadingFeets = await useSelector((state) => state.user.loading)
+
+    // }
   
     return (
     <div className='mt-5'>

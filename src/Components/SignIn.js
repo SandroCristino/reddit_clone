@@ -20,16 +20,20 @@ export default function SignIn() {
       console.log('Loading login')
       return;
     }
-    const storedData = JSON.parse(localStorage.getItem('user'))
-
   }, [user, loading, localStorage])
+
+  // useEffect(() => {
+  //   setText('')
+  // }, [password,email])
+
 
   const handleSignIn = async () => {
     const mailPattern = /^[\w-\.]+@([\w-]+\.)+[\w-]{2,4}$/
     if (!password) setText('Enter password')
     if (!mailPattern.test(email)) setText('Invalid email')
     try {
-      await logInWithEmailAndPassword(email, password)
+      const loginResult = await logInWithEmailAndPassword(email, password)
+      console.log(loginResult)
       await handleUpdateLocalStorage()
     } catch (error) {
       setText('Password or email incorrect')

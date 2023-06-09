@@ -31,6 +31,7 @@ export default function Register() {
             try {
                 await registerWithEmailAndPassword(name, email, password)
                 await handleUpdateLocalStorage()
+                window.location.reload()
             } catch (error) {
                 console.error(error)
     
@@ -49,9 +50,6 @@ export default function Register() {
         handleNavigate()
         }, [user, loading, navigate])
 
-    useEffect(() => {
-        setText('')
-    }, [name, password, passwordConf, email])
 
     const handleNavigate = async () => {
         const storedData = await JSON.parse(localStorage.getItem('user'))
