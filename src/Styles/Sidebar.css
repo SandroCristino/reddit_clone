@@ -18,7 +18,17 @@
   
 @media screen and (max-width: 1260px) {
     .sidebar {
+        top: 80px;
         position: absolute;
         height: max-content;
     }
 }
+
+@media screen and (max-width: 980px) {
+    .sidebar {
+        top: 200px;
+        position: absolute;
+        height: max-content;
+    }
+}
+

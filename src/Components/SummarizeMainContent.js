@@ -46,8 +46,8 @@ export default function SummarizeMainContent({isUserPage}) {
   
     
     return (
-    <div>
-
+    <div className={`${showLoadingSpinner ? '' : 'mt-5'}`}>
+      
      {/* Loading */}
      {showLoadingSpinner && (
           <div className="loading-overlay">

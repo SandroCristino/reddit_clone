@@ -26,7 +26,10 @@ li {
 
 .profile-span {
     position: absolute;
-    z-index: 9999;
+    right: 0px;
+    top: 62px;
+    list-style: none !important;
+    z-index: 9999 !important;
 }
 
 .profile-span-item:hover {
@@ -52,5 +55,9 @@ li {
         position: absolute;
         top: 1px;
         right: 1px;
+    }
+
+    .profile-span {
+        top: 190px
     }
 }

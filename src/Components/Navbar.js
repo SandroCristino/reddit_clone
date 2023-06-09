@@ -19,6 +19,10 @@ export default function Navbar() {
   const navigate = useNavigate(0)
   const dispatch = useDispatch()
 
+  useEffect(() => {
+    if (!isOpen) setProfileIsOpen(false)
+  },[isOpen, profileIsOpen])
+
   const toggleNavbar = () => {
     setIsOpen(!isOpen)
   };
@@ -91,21 +95,14 @@ export default function Navbar() {
               <li className="nav-item mx-3">
 
                 <button 
-                className="nav-link btn border" 
-                onMouseEnter={() => {setProfileIsOpen(true)}} 
-                onMouseLeave={() => {setProfileIsOpen(false)}}
+                className="nav-link btn w-100" 
+                // onMouseEnter={() => {setProfileIsOpen(true)}} 
+                // onMouseLeave={() => {setProfileIsOpen(false)}}
+                onClick={() => setProfileIsOpen(!profileIsOpen)}
                 >
-      
                   Hey, {user.name}
-                  { profileIsOpen && 
-                    <div className='mt-2 bg-light rounded px-3 py-1 profile-span '>
-                        <li className='nav-item profile-span-item' onClick={() => {navigate('/my_profile'); navigate(0)}}>Profile</li>
-                        <li className='nav-item profile-span-item' onClick={() => {navigate('/settings')}}>Settings</li>
-                    </div>
-                  }
                 </button>
 
-          
               </li>
           
               <li className="nav-item mx-2">
@@ -128,6 +125,13 @@ export default function Navbar() {
       {isOpen && (
         <Sidebar />
       )}
+
+      { profileIsOpen && 
+        <div className='mt-2 bg-light rounded px-3 py-1 profile-span'>
+            <li className='nav-item profile-span-item' onClick={() => {navigate('/my_profile'); navigate(0)}}>Profile</li>
+            <li className='nav-item profile-span-item' onClick={() => {navigate('/settings')}}>Settings</li>
+        </div>
+      }
     </nav>
   );
 }

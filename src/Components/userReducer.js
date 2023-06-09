@@ -67,6 +67,7 @@ export const {
   setSearchInputSpan,
   setRunFilterFromSearchBar,
   setUserName,
+  setProfileIsOpen,
 } = userSlice.actions;
 
 export default userSlice.reducer
