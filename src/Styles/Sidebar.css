@@ -1,5 +1,6 @@
 .sidebar {
-    position: fixed;
+    position: absolute;
+    height: max-content;
     left: 0;
     width: 200px;
     height: 100%;
@@ -18,7 +19,6 @@
 @media screen and (max-width: 1260px) {
     .sidebar {
         position: absolute;
-        top: 200px;
         height: max-content;
     }
 }

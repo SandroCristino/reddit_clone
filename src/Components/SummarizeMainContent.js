@@ -46,7 +46,7 @@ export default function SummarizeMainContent({isUserPage}) {
   
     
     return (
-    <div className='summarize-outer'>
+    <div>
 
      {/* Loading */}
      {showLoadingSpinner && (
@@ -64,12 +64,8 @@ export default function SummarizeMainContent({isUserPage}) {
         </div>
       </div>
   
-      {/* Headline */}
-      <div className="d-flex justify-content-center">
-        <h1 className="text-center p-1 bg-light bg-gradient rounded shadow main-content-headline">Your Feeds</h1>
-      </div>
   
-      {   showCreateFeed && <CreateFeed />}
+      { showCreateFeed && <CreateFeed />}
       
       {/* Display feed */}
       <FeedList isUserPage={isUserPage} />

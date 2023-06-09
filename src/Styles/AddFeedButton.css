@@ -1,10 +1,12 @@
 .addButtonContainer {
-    position: fixed;
+    position: absolute;
     top: 20px;
     right: 20px;
+    z-index: 5;
 }
   
 .addButton {
+    z-index: 5;
     display: flex;
     align-items: center;
     justify-content: center;

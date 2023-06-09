@@ -50,7 +50,7 @@ export default function Navbar() {
   }
 
   return (
-    <nav className="navbar navbar-expand-lg bg-light fixed-top">
+    <nav className="navbar navbar-expand-lg bg-light">
       <div className="navbar">
 
         <Link className="navbar-brand mx-3" onClick={() => handlePageChange('/')}>
@@ -59,18 +59,17 @@ export default function Navbar() {
         </Link>
 
         <div className="searchbar input-group mx-3">
-            <button className="btn btn-outline-secondary" type="button" id="button-addon1" onClick={handleDisplaySearchSpan}>
-              Search
-            </button>
-            <div className='searchbar-outer'>
-              <input type="text" className="form-control" onChange={(event) => handleSearchBarUpload(event)} value={searchbar}/>  
-              <div>
-                {searchbar !== '' && (
-                  <p className="my-2 p-2 bg-light rounded search-span" onClick={handleDisplaySearchSpan}>{searchInputSpan}</p>
-                )}
-              </div>
+          <input type="text" className="form-control" onChange={(event) => handleSearchBarUpload(event)} value={searchbar} />
+          <button className="btn btn-outline-secondary" type="button" id="button-addon1" onClick={handleDisplaySearchSpan}>
+            Search
+          </button>
+          {searchbar !== '' && (
+            <div className="searchbar-outer">
+              <p className="my-2 p-2 bg-light rounded search-span" onClick={handleDisplaySearchSpan}>
+                {searchInputSpan}
+              </p>
             </div>
-    
+          )}
         </div>
 
         <button className="navbar-toggler mx-3" type="button" onClick={toggleNavbar}>

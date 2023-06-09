@@ -1,6 +1,5 @@
 .loading-overlay {
     position: absolute;
-    top: 70px;
     left: 200px;
     width: 90%;
     height: 95%;
@@ -8,11 +7,7 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 10; /* Adjust the z-index to make sure it appears above other elements */
-}
-  
-.summarize-outer {
-    margin-top: 50px;
+    z-index: 2;
 }
 
 .loading-spinner {
@@ -33,24 +28,9 @@
 
 @media screen and (max-width: 1260px) {
 
-    .summarize-outer {
-        margin-top: 70px;
-    }
-
     .loading-overlay {
         left: 0px;
         width: 100%;
-    }
-
-    .feed-button {
-        top: 130px;
-    }
-
-}
-
-@media screen and (max-width: 1100px) {
-    .summarize-outer {
-        margin-top: 100px;
     }
 }
 

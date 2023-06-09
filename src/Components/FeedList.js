@@ -137,8 +137,14 @@ export default function FeedList({isUserPage}) {
   }
 
   return (
-    <div className="d-flex justify-content-center mt-4">
-      <div className="d-flex flex-column justify-content-center">
+    <div className="d-flex justify-content-center flex-column align-items-center">
+      { isUserPage && (
+        <div className="d-flex justify-content-center">
+          <h1 className="text-center p-1 bg-light bg-gradient rounded shadow main-content-headline">Your Feeds</h1>
+        </div>
+      )}
+ 
+      <div className="d-flex flex-column justify-content-center mb-5">
         {feeds.length === 0 
         ? (
           <div className="d-flex justify-content-center">
