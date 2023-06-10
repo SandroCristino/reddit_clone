@@ -22,7 +22,7 @@
 
 ## Live Demo
 
-[Reddit Clone:]https://sandywezzy.github.io/reddit_clone/
+[Reddit Clone:]https://sandrocristino.github.io/reddit_clone/
 
 #
 
