@@ -1,6 +1,6 @@
 # Reddit Clone
 
-## This is a reddit clone webiste
+## This is a reddit clone website
 
   <div style="margin-right:10px;">
     <img src="./src/Assets/screenshotOne.jpeg" alt="screenshot of website" width="400" />
