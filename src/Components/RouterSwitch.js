@@ -12,7 +12,7 @@ export default function RouteSwitch() {
   return (
     <BrowserRouter>
         <Routes>
-            <Route path={'/'} exact element={<Homepage />} />
+            <Route path={'/reddit_clone'} exact element={<Homepage />} />
             <Route path={'/my_profile'} element={<MyProfile />} />
             <Route path={'/sign_in'} element={<SignIn />} />
             <Route path={'/register'} element={<Register />} />
