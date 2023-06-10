@@ -73,6 +73,7 @@ const logInWithEmailAndPassword = async (email, password) => {
 // Email registration 
 const registerWithEmailAndPassword = async (name, email, password) => {
   try {
+
     const res = await createUserWithEmailAndPassword(auth, email, password)
     const user = res.user
 
@@ -161,12 +162,6 @@ const changePassword = async (newPassword) => {
   } catch (error) {
     return error
   }
-  // updatePassword(user, newPassword).then(() => {
-  //   // Update successful.
-  //   return true
-  // }).catch((error) => {
-  //   return error
-  // })
 }
 
 export {

@@ -39,8 +39,9 @@ export default function Register() {
                 await registerWithEmailAndPassword(name, email, password)
                 await handleUpdateLocalStorage()
             } catch (error) {
+                debugger
                 console.error(error)
-    
+                setText('Too many registreation today. Please wait 24 hours')
             }
         }
     }  

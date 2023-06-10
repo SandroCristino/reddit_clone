@@ -28,10 +28,15 @@ export default function Navbar() {
 
   // Logout
   const handleLogout = async () => {
-    await logout()
-    await clearUser()
-    localStorage.clear()
-    navigate(0)
+    try {
+      await logout()
+      await clearUser()
+      localStorage.clear()
+      navigate('/reddit_clone')
+      navigate(0)
+    } catch (error) {
+      console.log(error)
+    }    
   }
 
   // Change url
