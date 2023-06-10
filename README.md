@@ -3,7 +3,10 @@
 ## This is a where is reddit clone
 
   <div style="margin-right:10px;">
-    <img src="./src/Assets/Screenshot.jpeg" alt="screenshot of website" width="400" />
+    <img src="./src/Assets/screenshotOne.jpeg" alt="screenshot of website" width="400" />
+  </div>
+  <div style="margin-right:10px;">
+    <img src="./src/Assets/screenshotwo.jpeg" alt="screenshot of website" width="400" />
   </div>
 
 #
@@ -19,19 +22,19 @@
 
 ## Live Demo
 
-[Where Is Waldo:]https://sandywezzy.github.io/where_is_waldo/
+[Reddit Clone:]https://sandywezzy.github.io/reddit_clone/
 
 #
 
 ## Rules
-In order to recieve a highscore you have to pass as much rounds as possible. Each round is about 30 seconds. So keep your easy open and be fast
+Creating your feeds, comment and change user settings. Registrate via Mail or Google. I am using Firebase as a backend solution. Simple but  expressive
 #
 ## Getting Started
 
 In order to setup and work on this project on your own, you will need to:
 
 1. Clone this project:  
-`git clone git@github.com:SandyWezzy/where_is_waldo.git`
+`git clone git@github.com:SandroCristino/reddit_clone.git`
 
 2. Once you have cloned this project, you can install the required dependencies by using:  
 `npm install`
