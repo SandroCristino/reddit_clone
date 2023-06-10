@@ -36,10 +36,11 @@ export default function Register() {
         if (password.length < 6) setText('Password should be at least 6 character')
         if (text === '') {
             try {
-                await registerWithEmailAndPassword(name, email, password)
+                const userData = await registerWithEmailAndPassword(name, email, password)
+
+                await dispatch(setUser(userData))
                 await handleUpdateLocalStorage()
             } catch (error) {
-                debugger
                 console.error(error)
                 setText('Too many registreation today. Please wait 24 hours')
             }

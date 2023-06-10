@@ -20,7 +20,7 @@ const userSlice = createSlice({
     setUser: (state, action) => {
       state.isLoggedIn = true
       state.userData = action.payload
-      state.name = action.payload.name
+      state.name = action.payload.displayName
     },
     clearUser: (state) => {
       state.isLoggedIn = false

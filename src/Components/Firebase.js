@@ -77,10 +77,11 @@ const registerWithEmailAndPassword = async (name, email, password) => {
     const res = await createUserWithEmailAndPassword(auth, email, password)
     const user = res.user
 
+
     try {
-      await setDoc(doc(db, `users/${user.uid}`), {
+      setDoc(doc(db, `users/${user.uid}`), {
         uid: user.uid,
-        name,
+        name, 
         authProvider: "local",
         email,
       });
@@ -91,11 +92,14 @@ const registerWithEmailAndPassword = async (name, email, password) => {
     // Update user authentication state
     const updatedUser = {
       ...user,
-      isLoggedIn: true
+      isLoggedIn: true,
+      displayName: name,
     }
 
-    await setUser(updatedUser)
-    return true
+    debugger
+    console.log(updatedUser)
+    console.log(name)
+    return updatedUser
   } catch (err) {
     console.error(err);
     return false 

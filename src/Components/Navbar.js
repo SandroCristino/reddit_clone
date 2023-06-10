@@ -19,6 +19,7 @@ export default function Navbar() {
   // Open profile window if toggle is active
   useEffect(() => {
     if (!isOpen && window.innerWidth < 990) setProfileIsOpen(false)
+    console.log(user)
   },[isOpen, profileIsOpen])
 
   // Navbar toggler
@@ -64,7 +65,7 @@ export default function Navbar() {
       <div className="navbar">
 
         {/* Brand */}
-        <Link className="navbar-brand mx-3" onClick={() => handlePageChange('/')}>
+        <Link className="navbar-brand mx-3" onClick={() => handlePageChange('/reddit_clone')}>
           <i class="bi bi-reddit mx-2"></i>  
           Caution: Reddit Clone 
         </Link>
@@ -104,8 +105,6 @@ export default function Navbar() {
 
                 <button 
                 className="nav-link btn w-100" 
-                // onMouseEnter={() => {setProfileIsOpen(true)}} 
-                // onMouseLeave={() => {setProfileIsOpen(false)}}
                 onClick={() => setProfileIsOpen(!profileIsOpen)}
                 >
                   Hey, {user.name}
