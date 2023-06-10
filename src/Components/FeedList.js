@@ -138,6 +138,8 @@ export default function FeedList({isUserPage}) {
 
   return (
     <div className="d-flex justify-content-center flex-column align-items-center">
+
+      {/* Headline */}
       { isUserPage && (
         <div className="d-flex justify-content-center">
           <h1 className="text-center p-1 bg-light bg-gradient rounded shadow main-content-headline">Your Feeds</h1>
@@ -145,12 +147,16 @@ export default function FeedList({isUserPage}) {
       )}
  
       <div className="d-flex flex-column justify-content-center mb-5">
+
+        {/* Create infobox */}
         {feeds.length === 0 
         ? (
           <div className="d-flex justify-content-center">
             <h3 className="text-center p-1 mt-3 w-100 bg-light bg-gradient rounded shadow">No feeds so far</h3>
           </div>
         ) : (
+
+          // Render feeds
               feeds.slice(0, displayCount).map((feed) => (
                 <div key={feed.id} className='feedlist-container mb-4 shadow'>
                     <Feed
@@ -166,6 +172,7 @@ export default function FeedList({isUserPage}) {
             )
         }
 
+        {/* Loading more feeds button */}
         {feeds.length > 0 && feeds.length > loadedObjects
         ? <button onClick={handleLoadMore} className='btn btn-light mb-5'>More Feeds</button>
         : ''

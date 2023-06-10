@@ -4,11 +4,8 @@ import { setSearchInput } from './userReducer'
 import { useSelector, useDispatch } from 'react-redux'
 import { clearUser, setRunFilterFromSearchBar } from './userReducer'
 import { logout } from "../Components/Firebase.js"
-import '../Styles/Navbar.css'
 import Sidebar from './Sidebar'
-
-
-
+import '../Styles/Navbar.css'
 
 export default function Navbar() {
   const [searchbar, setSearchBar] = useState('')
@@ -19,14 +16,17 @@ export default function Navbar() {
   const navigate = useNavigate(0)
   const dispatch = useDispatch()
 
+  // Open profile window if toggle is active
   useEffect(() => {
-    if (!isOpen) setProfileIsOpen(false)
+    if (!isOpen && window.innerWidth < 990) setProfileIsOpen(false)
   },[isOpen, profileIsOpen])
 
+  // Navbar toggler
   const toggleNavbar = () => {
     setIsOpen(!isOpen)
   };
 
+  // Logout
   const handleLogout = async () => {
     await logout()
     await clearUser()
@@ -34,11 +34,13 @@ export default function Navbar() {
     navigate(0)
   }
 
+  // Change url
   const handlePageChange = (whereTo) => {
     navigate(whereTo)
     navigate(0)
   }
 
+  // Searchbar functionality 
   const handleSearchBarUpload = (event) => {
     setSearchBar(event.target.value)
     dispatch(setSearchInput(event.target.value))
@@ -49,7 +51,6 @@ export default function Navbar() {
     if (searchInputSpan !== '') {
       setSearchBar('')
       await dispatch(setRunFilterFromSearchBar(true))
-      // await dispatch(setSearchInput(''))
     }
   }
 
@@ -57,11 +58,13 @@ export default function Navbar() {
     <nav className="navbar navbar-expand-lg bg-light">
       <div className="navbar">
 
+        {/* Brand */}
         <Link className="navbar-brand mx-3" onClick={() => handlePageChange('/')}>
           <i class="bi bi-reddit mx-2"></i>  
           Caution: Reddit Clone 
         </Link>
 
+        {/* Searchbar */}
         <div className="searchbar input-group mx-3">
           <input type="text" className="form-control" onChange={(event) => handleSearchBarUpload(event)} value={searchbar} />
           <button className="btn btn-outline-secondary" type="button" id="button-addon1" onClick={handleDisplaySearchSpan}>
@@ -76,10 +79,10 @@ export default function Navbar() {
           )}
         </div>
 
+        {/* Navbar toggler */}
         <button className="navbar-toggler mx-3" type="button" onClick={toggleNavbar}>
           <span className="navbar-toggler-icon"></span>
         </button>
-
       </div>
 
       <div className={`right-navbar d-flex ${ isOpen ? 'w-100 justify-content-end' : '' }`}>
@@ -105,6 +108,7 @@ export default function Navbar() {
 
               </li>
           
+              {/* Logout */}
               <li className="nav-item mx-2">
                 <Link className="nav-link btn btn-danger border" to="/" onClick={handleLogout}>
                   Logout
@@ -112,6 +116,8 @@ export default function Navbar() {
               </li>
             </>
             ) : (
+              
+              // Sign in
               <li className="nav-item mx-2">
                 <Link className="nav-link nav-item btn btn-danger border" to="/sign_in">
                   Sign in/ Register

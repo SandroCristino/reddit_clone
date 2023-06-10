@@ -1,13 +1,13 @@
 import React from 'react'
 import { useDispatch } from 'react-redux'
 import { setSorting } from './userReducer'
-
 import '@fortawesome/fontawesome-free/css/all.min.css'
 import '../Styles/Sidebar.css'
 
 const Sidebar = () => {
     const dispatch = useDispatch()
 
+    // Resort feedlist
     const handleChangeSorting = (whatToSort) => {
         dispatch(setSorting(whatToSort))
     }
@@ -15,6 +15,8 @@ const Sidebar = () => {
     return (
     <div className="sidebar">
         <br />
+
+        {/* Navigation buttons */}
         <p className='topic-btn'>
             <i class="bi bi-rss-fill mx-1"></i>
             Feeds
@@ -27,8 +29,11 @@ const Sidebar = () => {
             <i class="bi bi-bullseye mx-1"></i>
             Recent
         </button>
+
         <hr />
         <br />
+
+        {/* More navigation buttons */}
         <p className='topic-btn'>
             <i class="bi bi-filter-square-fill mx-1"></i>
             Topics

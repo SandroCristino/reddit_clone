@@ -1,8 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit'
 import userReducer, { setUser } from './userReducer.js'
 
-
-
 const store = configureStore({
   reducer: {
     user: userReducer,
@@ -17,7 +15,7 @@ store.subscribe(() => {
     localStorage.setItem('user', JSON.stringify({ isLoggedIn, userData, showCreateFeed }))
   } catch (error) {
     console.log(`Problem setItem localStorage: ${error}`)
-  }});
+}});
 
 // Rehydrate the user state from local storage
 try {

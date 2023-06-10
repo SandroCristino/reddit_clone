@@ -2,11 +2,9 @@ import "firebase/auth"
 import "firebase/firestore"
 import 'firebase/database'
 import { initializeApp } from "firebase/app"
-import { connectStorageEmulator, getStorage } from "firebase/storage";
-import { getFirestore, setDoc, doc, updateDoc, arrayUnion, getDoc } from 'firebase/firestore';
+import { getStorage } from "firebase/storage";
+import { getFirestore, setDoc, doc, updateDoc, arrayUnion } from 'firebase/firestore';
 import { setUser } from "./userReducer.js";
-import { useDispatch } from "react-redux";
-import { useEffect } from "react";
 
 import {
     GoogleAuthProvider,
@@ -26,8 +24,6 @@ import {
     where,
     addDoc,
 } from 'firebase/firestore'
-import { useState } from "react";
-
 
 const firebaseConfig = {
     apiKey: "AIzaSyCUGj6yMVEFFAO--Am4OzHldBNN2_-3lS8",
@@ -42,8 +38,6 @@ const app = initializeApp(firebaseConfig)
 const auth = getAuth(app)
 const db = getFirestore(app)
 const storage = getStorage(app)
-
-
 
 // Google authentication
 const googleProvider = new GoogleAuthProvider()
@@ -66,35 +60,10 @@ const signInWithGoogle = async () => {
   }
 }
 
-// // Google authentication
-// const googleProvider = new GoogleAuthProvider();
-// const signInWithGoogle = async () => {
-//   try {
-//     const res = await signInWithPopup(auth, googleProvider);
-//     const user = res.user;
-//     const q = query(collection(db, "users"), where("uid", "==", user.uid));
-//     const docs = await getDocs(q);
-//     if (docs.docs.length === 0) {
-//       await addDoc(collection(db, "users"), {
-//         uid: user.uid,
-//         name: user.displayName,
-//         authProvider: "google",
-//         email: user.email,
-//       });
-//     }
-//   } catch (err) {
-//     console.error(err);
-//     alert(err.message);
-//   }
-// };
-
-
-
 // Email signin authentication
 const logInWithEmailAndPassword = async (email, password) => {
     try {
       return await signInWithEmailAndPassword(auth, email, password);
-      return true
     } catch (err) {
       console.error(err)
       return false
@@ -199,7 +168,6 @@ const changePassword = async (newPassword) => {
   //   return error
   // })
 }
-
 
 export {
     auth,

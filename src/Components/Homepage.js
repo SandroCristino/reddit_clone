@@ -7,7 +7,7 @@ import SummarizeMainContent from "./SummarizeMainContent";
 export default function Homepage() {
   const [isScreenSmall, setIsScreenSmall] = useState(false)
 
-  // Check screen
+  // Check screen size
   useEffect(() => {
     const handleResize = () => {
       setIsScreenSmall(window.innerWidth <= 1024); // Adjust the screen size threshold as needed

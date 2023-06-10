@@ -80,7 +80,7 @@ export default function CreateFeed() {
     }
     return (
         <div className='d-flex justify-content-center'>
-            <div className="mt-4 createFeedContainer">
+            <div className="mt-4 mb-3 createFeedContainer">
                 <div classname='createFeedInnerContainer'>
                 <h2>Create Feed</h2>
                 <div className="mb-3">
