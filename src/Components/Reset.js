@@ -11,7 +11,6 @@ export default function Reset() {
     // Navigate to Sign in
     useEffect(() => {
         if (loading) return
-        if (user) navigate("/sign_in")
     }, [user, loading])
     
     // Password reset
@@ -19,6 +18,8 @@ export default function Reset() {
         const result = await sendPasswordReset(email)
         if (result) {
           navigate('/sign_in')
+        } else {
+            alert("Mail not find on server")
         }
     };
 

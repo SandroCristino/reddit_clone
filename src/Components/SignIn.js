@@ -138,14 +138,15 @@ export default function SignIn() {
 
               <hr className="my-4" />
 
-              {/* Sign in Google button */}
+              {/* In Progress */}
+              {/* Sign in Google button
               <button 
               className="btn btn-lg btn-block btn-primary"
               type="submit"
               onClick={handleGoogleSignIn}>
                 <i className="fab fa-google me-2"></i> 
                 Sign in with google
-              </button>
+              </button> */}
 
               {/* Navigate to register */}
               <Link 
