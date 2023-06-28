@@ -1,5 +1,10 @@
 .navbar {
+    position: fixed;
+    top: 0em;
     width: 100%;
+    z-index: 0;
+    transform: translateZ(999999px);
+    
 }
 
 .searchbar {
@@ -26,10 +31,23 @@ li {
 
 .profile-span {
     position: absolute;
-    right: 0px;
+    width: fit-content;
+    right: 0;
     top: 62px;
     list-style: none !important;
     z-index: 9999 !important;
+    animation: slideIn 1s ease;
+    padding: 10px 200px 100% 10px;
+}
+
+@keyframes slideIn {
+0% {
+    transform: translateX(100%);
+}
+
+100% {
+    transform: translateX(0%);
+}
 }
 
 .profile-span-item:hover {

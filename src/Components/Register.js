@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react"
 import { useAuthState } from "react-firebase-hooks/auth"
 import { getUserServerData } from '../Components/Firebase.js'
 import { useNavigate } from "react-router-dom"
-import { useDispatch } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import {
   auth,
   registerWithEmailAndPassword,
@@ -14,6 +14,7 @@ export default function Register() {
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
     const [passwordConf, setPasswordConf] = useState('')
+    const localUser = useSelector(state => state.user) // Retrieve the user state from Redux
     const [name, setName] = useState("")
     const [user, loading] = useAuthState(auth)
     const [text, setText] = useState('')
@@ -23,8 +24,14 @@ export default function Register() {
     // Handle localstorge update and user navigation
     useEffect(() => {
         if (loading) return
-        handleNavigate()
-    }, [user, loading, navigate])
+        console.log(localUser)
+        if (localUser.isLoggedIn) {
+            navigate("/my_profile")
+            navigate(0)
+        }
+        // handleNavigate()
+
+    }, [user, loading, navigate, localUser])
 
     // Check password conditions, try login
     const register = async () => {
@@ -37,9 +44,13 @@ export default function Register() {
         if (text === '') {
             try {
                 const userData = await registerWithEmailAndPassword(name, email, password)
-
-                await dispatch(setUser(userData))
-                await handleUpdateLocalStorage()
+                debugger
+                console.log(userData)
+                const newUserData = {'accessToken': userData.accessToken, 'email': userData.email, 'displayName': userData.displayName, 'uid': userData.uid}
+                debugger
+                console.log(newUserData)
+                await dispatch(setUser(newUserData))
+                // await handleUpdateLocalStorage()
             } catch (error) {
                 console.error(error)
                 setText('Too many registreation today. Please wait 24 hours')
@@ -47,22 +58,22 @@ export default function Register() {
         }
     }  
 
-    // Update localstorage
-    const handleUpdateLocalStorage = async () => {
-        const userUid = auth.currentUser.uid
-        const currentUser = await getUserServerData(userUid)
-        await dispatch(setUser(currentUser))
-    }
+    // // Update localstorage
+    // const handleUpdateLocalStorage = async () => {
+    //     const userUid = auth.currentUser.uid
+    //     const currentUser = await getUserServerData(userUid)
+    //     await dispatch(setUser(currentUser))
+    // }
 
-    // Navigate to myProfile as soon as user is login 
-    const handleNavigate = async () => {
-        const storedData = await JSON.parse(localStorage.getItem('user'))
-        if (storedData === null) return 
-        if (storedData.isLoggedIn === true) {
-            navigate("/my_profile")
-            navigate(0)
-        }
-    }
+    // // Navigate to myProfile as soon as user is login 
+    // const handleNavigate = async () => {
+    //     const storedData = await JSON.parse(localStorage.getItem('user'))
+    //     if (storedData === null) return 
+    //     if (storedData.isLoggedIn === true) {
+    //         navigate("/my_profile")
+    //         navigate(0)
+    //     }
+    // }
     
     return (
         <div class="container py-5 h-100">

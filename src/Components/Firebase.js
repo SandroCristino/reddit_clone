@@ -107,13 +107,15 @@ const registerWithEmailAndPassword = async (name, email, password) => {
 
     const res = await createUserWithEmailAndPassword(auth, email, password)
     const user = res.user
+    
 
-    try {
-      setDoc(doc(db, `users/${user.uid}`), {
+    try { 
+      await setDoc(doc(db, 'users', user.uid), {
         uid: user.uid,
-        name, 
+        name: name, 
         authProvider: "local",
-        email,
+        email: user.email,
+        feedList: [],
       });
     } catch (e) {
       console.log(e)
@@ -125,6 +127,7 @@ const registerWithEmailAndPassword = async (name, email, password) => {
       isLoggedIn: true,
       displayName: name,
     }
+
 
     return updatedUser
   } catch (err) {
@@ -151,6 +154,7 @@ const logout = () => {
 
 // Update server data with specific parameter
 async function updateServerData(fileSource, fileId, attribute, value) {
+
   try {
     await updateDoc(doc(db, `${fileSource}/${fileId}`), {
         [attribute]: arrayUnion(value)
@@ -159,6 +163,15 @@ async function updateServerData(fileSource, fileId, attribute, value) {
       console.log(error)
   }
 }
+// async function updateServerData(fileSource, fileId, attribute, value) {
+//   try {
+//     await updateDoc(doc(db, `${fileSource}/${fileId}`), {
+//         [attribute]: arrayUnion(value)
+//     })
+//   } catch (error) {
+//       console.log(error)
+//   }
+// }
 
 // Replace server data with specific parameter
 async function updateReplaceServerData(fileSource, fileId, attribute, value) {

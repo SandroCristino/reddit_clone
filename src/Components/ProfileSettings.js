@@ -9,14 +9,14 @@ export default function ProfileSettings() {
   const offlineUser = useSelector(state => state.user) 
   const [updateUserName, setUpdateUserName] = useState(false)
   const [updatePasswordState, setUpdatePasswordState] = useState(false) 
-  const [newName, setNewName] = useState(offlineUser.name)
+  const [newName, setNewName] = useState(offlineUser.userName)
   const [newPassword, setNewPassword] = useState('')
   const [message, setMessage] = useState('')
   const dispatch = useDispatch()
 
   const handleUpdateUsername = async () => {    
     await setUpdateUserName(!updateUserName)
-    if (updateUserName && newName !== offlineUser.name) {
+    if (updateUserName && newName !== offlineUser.userName) {
       updateReplaceServerData('users', offlineUser.uid, 'name', newName)
       dispatch(setUserName(newName))
     }
@@ -56,7 +56,7 @@ export default function ProfileSettings() {
               <p>Username:</p>
               { updateUserName
                 ?   <input type="text" className='form-control' required value={newName} onChange={handleNameChange}/>
-                :   <p className='mx-2'>{offlineUser.name}</p>
+                :   <p className='mx-2'>{offlineUser.userName}</p>
               }
             </div>
 

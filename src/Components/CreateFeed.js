@@ -33,21 +33,17 @@ export default function CreateFeed() {
     async function handleUploadData() {
         if (!picture) return
 
+
         try {
             setLoading(true)
 
             // Create ID
             const feedId = uuidv4();
 
-            // Upload picture to Firebase
-            const imagesRef = ref(storage, `images/${feedId}`)
-            await uploadBytes(imagesRef, picture).then((snapshot) => {
-                console.log('Uploaded a blob or file!');
-            });
-
             // Set owner data
+            console.log(currentUser)
             const newOwnerData = {
-                name: currentUser.name,
+                name: currentUser.displayName,
                 email: currentUser.email,
                 id: currentUser.uid,
             }
@@ -66,6 +62,12 @@ export default function CreateFeed() {
             // Assign to owner 
             await updateServerData('users',currentUser.uid, 'feedList', feedId)
        
+            // Upload picture to Firebase
+            const imagesRef = ref(storage, `images/${feedId}`)
+            await uploadBytes(imagesRef, picture).then((snapshot) => {
+                console.log('Uploaded a blob or file!');
+            });
+
             // Reset
             setPicture('')
             setDescription('')

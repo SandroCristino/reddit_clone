@@ -31,7 +31,6 @@ export default function Feed({ picture, description, category, feedId, feedComme
         }
 
         // Update likes
-        getLikesFromDB()
       }, [commentList, newComment, likes])
 
 
@@ -64,7 +63,7 @@ export default function Feed({ picture, description, category, feedId, feedComme
           const comment = {
             id: uuidv4(),
             text: newComment,
-            userName: currentUser.name,
+            userName: currentUser.displayName,
             userID: currentUser.uid,
             date: currentDate,
           };
@@ -74,18 +73,20 @@ export default function Feed({ picture, description, category, feedId, feedComme
         }
 
         updateServerData('users', currentUser.uid, 'commentList', feedId)
+        // updateServerData('feeds', feedId, 'commentList', comment)
     }
 
 
     async function handleUploadLikes() {
         // Upload to feed data
-        updateServerData('feeds', feedId, 'likes', currentUser.uid)
+        await updateServerData('feeds', feedId, 'likes', currentUser.uid)
 
         // Upload to user data
-        updateServerData('users', currentUser.uid, 'likeList', feedId)
+        await updateServerData('users', currentUser.uid, 'likeList', feedId)
 
-        // Immediately change likes
-        setLikes(likes + 1)
+        // Recieve likes from server
+        await getLikesFromDB()
+
     }
 
     function toggleShowAllComments() {

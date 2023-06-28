@@ -2,12 +2,12 @@
     position: absolute;
     left: 200px;
     width: 90%;
-    height: 95%;
+    height: 100%;
     background-color: rgb(255, 255, 255); /* Semi-transparent black overlay */
     display: flex;
     justify-content: center;
     align-items: center;
-    z-index: 99999;
+    z-index: 0;
     transform: translateZ(99999px);
 }
 

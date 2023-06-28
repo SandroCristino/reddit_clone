@@ -23,10 +23,10 @@ export default function Homepage() {
 
   return (
     <div>
-      <Navbar />
       {!isScreenSmall && <Sidebar />}
-      <SummarizeMainContent />
+      <Navbar />
       <Footer />
+      <SummarizeMainContent />
     </div>
   );
 }

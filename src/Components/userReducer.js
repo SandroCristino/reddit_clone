@@ -1,8 +1,8 @@
-import { createSlice } from '@reduxjs/toolkit';
+import { createSlice } from '@reduxjs/toolkit'
 
 const initialState = {
   isLoggedIn: false,
-  name: null,
+  userName: null,
   userData: null,
   showCreateFeed: false,
   loading: true,
@@ -20,12 +20,12 @@ const userSlice = createSlice({
     setUser: (state, action) => {
       state.isLoggedIn = true
       state.userData = action.payload
-      state.name = action.payload.displayName
+      state.userName = action.payload.displayName
     },
     clearUser: (state) => {
       state.isLoggedIn = false
       state.userData = null
-      state.name = null
+      state.userName = null
     },
     setShowCreateFeed: (state, action) => {
       state.showCreateFeed = action.payload
@@ -49,7 +49,7 @@ const userSlice = createSlice({
       state.runFilterFromSearchBar = action.payload
     }, 
     setUserName: (state, action) => {
-      state.name = action.payload
+      state.userName = action.payload
     }
   },
 });
