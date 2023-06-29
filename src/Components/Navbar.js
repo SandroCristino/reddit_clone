@@ -138,7 +138,7 @@ export default function Navbar() {
 
       { profileIsOpen && 
         <div className='mt-2 bg-light rounded profile-span'>
-            <li className='nav-item profile-span-item' onClick={() => {navigate('/my_profile'); navigate(0)}}>Profile</li>
+            <li className='nav-item profile-span-item' onClick={() => {navigate('/my_profile')}}>Profile</li>
             <li className='nav-item profile-span-item' onClick={() => {navigate('/settings')}}>Settings</li>
         </div>
       }
