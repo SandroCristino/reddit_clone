@@ -27,7 +27,6 @@ export default function Register() {
         console.log(localUser)
         if (localUser.isLoggedIn) {
             navigate("/my_profile")
-            navigate(0)
         }
         // handleNavigate()
 
